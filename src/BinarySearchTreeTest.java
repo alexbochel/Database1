@@ -64,7 +64,7 @@ public class BinarySearchTreeTest extends student.TestCase {
     /**
      * This test ensures that the find method of BinarySearchTree works 
      * correctly. 
-     */
+     */ 
     public void testFind() 
     {
         assertEquals("AnItem", tree.find(y));
@@ -87,5 +87,32 @@ public class BinarySearchTreeTest extends student.TestCase {
         assertTrue(bigTree.delete(8));
         assertTrue(bigTree.delete(22));
         assertTrue(bigTree.delete(25));
+    }
+    
+    /**
+     * This test ensures that the delete function is working correctly. 
+     */
+    public void testDelete2()
+    {
+        assertTrue(bigTree.delete(20));
+        assertTrue(bigTree.delete(7));
+        assertTrue(bigTree.delete(8));
+        assertTrue(bigTree.delete(22));
+        assertTrue(bigTree.delete(25));
+        assertTrue(bigTree.delete(4));
+        assertTrue(bigTree.delete(4));
+        assertTrue(bigTree.delete(1));
+        assertTrue(bigTree.delete(3));
+        assertTrue(bigTree.delete(2));
+        assertTrue(bigTree.delete(4));
+    }
+    
+    /**
+     * This test checks what happens when deleting an element that is not
+     * in the tree. 
+     */
+    public void testDeleteNull()
+    {
+        assertFalse(bigTree.delete(0));
     }
 }
