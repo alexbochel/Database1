@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 /**
  * This class includes the impmentation for the hashing data structure. 
  * 
@@ -9,8 +11,9 @@ public class HashTable {
 
     private int initialSize; // Initial amount of table slots. 
     private int currentTableSize; // Current table size at any given time.
-    private int slotsOccupied;   // Current amount of slots occupied. 
-    private int[] handlesArray; // The actual table with handles stored. 
+    private int slotsOccupied;   // Current amount of slots occupied.
+    private ArrayList<Integer> occupiedIndecies;
+    private Handle[] handlesArray; // The actual table with handles stored. 
     
     /**
      * The hash constructor creates the Array for the table as well as sets
@@ -19,7 +22,7 @@ public class HashTable {
     public HashTable(int size)
     {
         initialSize = size;
-        handlesArray = new int[initialSize];
+        handlesArray = new Handle[initialSize];
         currentTableSize = initialSize;
         slotsOccupied = 0; 
     }
@@ -34,13 +37,25 @@ public class HashTable {
     }
     
     /**
-     * This method inserts a new element in the hashtable. 
+     * This method inserts a new handle in the hashtable.
+     * @param string Name of artist or song title. 
+     * @param handle Offset of element being inserted into the table.  
      * @return Index of element in table. 
      */
-    public int insert()
+    public int insert(String string, Handle handle)
     {
-        // TODO: Actual inserting as well as quadtratic probing. 
-        slotsOccupied++;
+        int slot = hash(string, currentTableSize);
+        
+        if (handlesArray[slot] == null)
+        {
+            this.handlesArray[slot] = handle;   // Add handle to table.
+        }
+        else
+        {
+            // TODO: Do probing here. 
+        }
+        slotsOccupied++;                        // Increment slot occupied. 
+        occupiedIndecies.add(slot);             // Add index to occupied ind..
         
         // If the table is over 50% full, call resizeTable. 
         if (slotsOccupied > (currentTableSize / 2))
@@ -64,7 +79,7 @@ public class HashTable {
     private void expandTable()
     {
         // Initialize new array with twice the space. 
-        int[] newTable = new int[this.currentTableSize * 2];
+        int[] newTable = new int[currentTableSize * 2];
         
     }
     
@@ -77,7 +92,7 @@ public class HashTable {
      * @param m Table size. 
      * @return TODO: ?? Spot in the table. 
      */
-    public int h(String s, int m)
+    public int hash(String s, int m)
     {
         int intLength = s.length() / 4;
         long sum = 0;
