@@ -20,7 +20,7 @@ public class HashTable {
      * The hash constructor creates the Array for the table as well as sets
      * the count for the size of the table. 
      */
-    public HashTable(int size)
+    public HashTable(int size) // TODO: Mem manager arg. 
     {
         initialSize = size;
         handlesArray = new Handle[initialSize];
@@ -66,16 +66,18 @@ public class HashTable {
      */
     public int insert(String handleString, Handle handle)
     {
-        // String handleString = ""; // String found using offset search.  
+        // String handleString = ""; TODO: Make get from mem manager.   
         int slot = hash(handleString, currentTableSize);
+        int tombstonePointer = 0;
         
-        if (handlesArray[slot] == null)
+        if (handlesArray[slot] == null || isTombstone(handlesArray[slot]))
         {
-            this.handlesArray[slot] = handle;   // Add handle to table.
+            // TODO: Will condition 2 ever occur? 
+            handlesArray[slot] = handle;
         }
         else
         {
-            // TODO: Do probing here. 
+            
         }
         
         slotsOccupied++;         
