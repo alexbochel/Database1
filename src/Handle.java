@@ -14,18 +14,17 @@ public class Handle implements Comparable<Handle>
     {
         offset = byteOffset;
     }
-    
+
+
     public int getOffset()
     {
         return offset;
     }
 
 
-    @Override
     public int compareTo(Handle handle2)
     {
-        // TODO Auto-generated method stub
-        return 0;
+        return (this.offset - handle2.getOffset());
     }
 
 }
