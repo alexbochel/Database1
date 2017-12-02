@@ -9,11 +9,12 @@ import java.util.ArrayList;
  */
 public class HashTable {
 
-    private int initialSize; // Initial amount of table slots. 
-    private int currentTableSize; // Current table size at any given time.
-    private int slotsOccupied;   // Current amount of slots occupied.
+    private int initialSize;  
+    private int currentTableSize;
+    private int slotsOccupied;     
     private ArrayList<Integer> occupiedIndecies;
-    private Handle[] handlesArray; // The actual table with handles stored. 
+    private Handle[] handlesArray;  
+    private Handle tombstone; // Tombstone handle: Do not rehash these. 
     
     /**
      * The hash constructor creates the Array for the table as well as sets
@@ -25,6 +26,7 @@ public class HashTable {
         handlesArray = new Handle[initialSize];
         currentTableSize = initialSize;
         slotsOccupied = 0; 
+        tombstone = new Handle(-1);
     }
     
     /**
@@ -37,14 +39,35 @@ public class HashTable {
     }
     
     /**
+     * This method determines whether or not a given handle is a tombstone
+     * by checking to see if it's value is -1. 
+     * @return Whether or not handle is tombstone. 
+     */
+    public boolean isTombstone(Handle handle)
+    {
+        return handle.getOffset() == -1;
+    }
+    
+    /**
+     * 
+     * @param string
+     * @return
+     */
+    public Handle getEntry(String string)
+    {
+        return tombstone; // TODO: Do this nigga. 
+    }
+    
+    /**
      * This method inserts a new handle in the hashtable.
      * @param string Name of artist or song title. 
      * @param handle Offset of element being inserted into the table.  
      * @return Index of element in table. 
      */
-    public int insert(String string, Handle handle)
+    public int insert(String handleString, Handle handle)
     {
-        int slot = hash(string, currentTableSize);
+        // String handleString = ""; // String found using offset search.  
+        int slot = hash(handleString, currentTableSize);
         
         if (handlesArray[slot] == null)
         {
@@ -54,8 +77,9 @@ public class HashTable {
         {
             // TODO: Do probing here. 
         }
-        slotsOccupied++;                        // Increment slot occupied. 
-        occupiedIndecies.add(slot);             // Add index to occupied ind..
+        
+        slotsOccupied++;         
+        occupiedIndecies.add(slot);
         
         // If the table is over 50% full, call resizeTable. 
         if (slotsOccupied > (currentTableSize / 2))
@@ -63,7 +87,7 @@ public class HashTable {
             expandTable();
         }
         
-        return -1;
+        return slot;
     }
     
     // TODO: Do we need this?
