@@ -15,13 +15,17 @@ public class HashTable {
     private ArrayList<Integer> occupiedIndecies;
     private Handle[] handlesArray;  
     private Handle tombstone; // Tombstone handle: Do not rehash these. 
+    private MemoryManager memManager;
+    private boolean isSongTable = false;
     
     /**
      * The hash constructor creates the Array for the table as well as sets
      * the count for the size of the table. 
      */
-    public HashTable(int size) // TODO: Mem manager arg. 
+    public HashTable(int size, MemoryManager manager, boolean isSong)
     {
+        memManager = manager; // TODO: Does this update as mem manager updates in database?
+        isSongTable = isSong;
         initialSize = size;
         handlesArray = new Handle[initialSize];
         currentTableSize = initialSize;
@@ -48,14 +52,18 @@ public class HashTable {
         return handle.getOffset() == -1;
     }
     
-    /**
-     * 
-     * @param string
-     * @return
-     */
+    // TODO
     public Handle getEntry(String string)
     {
+        Handle returnHandle = find(string);
+        
         return tombstone; // TODO: Do this nigga. 
+    }
+     
+    // TODO
+    private Handle find(String handle)
+    {
+        return tombstone;
     }
     
     /**
@@ -64,35 +72,41 @@ public class HashTable {
      * @param handle Offset of element being inserted into the table.  
      * @return Index of element in table. 
      */
-    public int insert(String handleString, Handle handle)
+    public int insert(Handle handle)
     {
-        // String handleString = ""; TODO: Make get from mem manager.   
-        int slot = hash(handleString, currentTableSize);
-        int tombstonePointer = 0;
+        // Handle string depends on type of table, song or artist. 
+        String handleString = isSongTable ? 
+                memManager.getSongString(handle.getOffset()) :
+                memManager.getArtistString(handle.getOffset());
+                
+        int homeSlot = hash(handleString, currentTableSize);
+        int slotCount = homeSlot;
+        int probeOffset = 1;
         
-        if (handlesArray[slot] == null || isTombstone(handlesArray[slot]))
+        if (find(handleString) != null)
         {
-            // TODO: Will condition 2 ever occur? 
-            handlesArray[slot] = handle;
-        }
-        else
-        {
+            while (handlesArray[slotCount] != null &&
+                    !isTombstone(handlesArray[slotCount]))
+            {
+                slotCount = homeSlot + probeOffset ^ 2; // TODO: Math pow
+                probeOffset++;
+            }
             
-        }
-        
-        slotsOccupied++;         
-        occupiedIndecies.add(slot);
-        
-        // If the table is over 50% full, call resizeTable. 
-        if (slotsOccupied > (currentTableSize / 2))
-        {
-            expandTable();
-        }
-        
-        return slot;
+            
+            handlesArray[slotCount] = handle;
+            slotsOccupied++;         
+            occupiedIndecies.add(slotCount);
+            
+            // If the table is over 50% full, call resizeTable. 
+            if (slotsOccupied > (currentTableSize / 2))
+            {
+                expandTable();
+            }
+        }        
+        return slotCount;
     }
     
-    // TODO: Do we need this?
+    // TODO: Do we need this? Yes. 
     public int delete()
     {
         return -1;
@@ -105,8 +119,15 @@ public class HashTable {
     private void expandTable()
     {
         // Initialize new array with twice the space. 
-        int[] newTable = new int[currentTableSize * 2];
+        Handle[] temp = handlesArray;
+        handlesArray = new Handle[currentTableSize * 2];
         
+        // Get all occupied indecies and rehash them to thenew table. 
+        for (int i = 0; i < occupiedIndecies.size(); i++)
+        {
+            Handle toInsert = temp[occupiedIndecies.get(i)];
+            insert(toInsert);
+        }
     }
     
     /**
@@ -116,7 +137,7 @@ public class HashTable {
      * 
      * @param s String being hashed. 
      * @param m Table size. 
-     * @return TODO: ?? Spot in the table. 
+     * @return int Home slot in the table.  
      */
     public int hash(String s, int m)
     {
