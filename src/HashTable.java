@@ -14,7 +14,7 @@ public class HashTable {
     private int slotsOccupied;     
     private ArrayList<Integer> occupiedIndecies;
     private Handle[] handlesArray;  
-    private Handle tombstone; // Tombstone handle: Do not rehash these. 
+    private Handle tombstone; 
     private MemoryManager memManager;
     private boolean isSongTable = false;
     
@@ -27,7 +27,7 @@ public class HashTable {
      */
     public HashTable(int size, MemoryManager manager, boolean isSong)
     {
-        memManager = manager; // TODO: Does this update as mem manager updates in database?
+        memManager = manager;
         isSongTable = isSong;
         initialSize = size;
         occupiedIndecies = new ArrayList<Integer>();
@@ -56,18 +56,44 @@ public class HashTable {
         return handle.getOffset() == -1;
     }
     
-    // TODO
+    /**
+     * This method returns the handle for a given string name/artist. 
+     * @param string Name/Artist being looked for. 
+     * @return Handle that correspons with the given name/artist. 
+     */
     public Handle getEntry(String string)
-    {
-        Handle returnHandle = find(string);
-        
-        return returnHandle; // TODO: Do this nigga. 
+    { 
+        int handleSlot = find(string);
+        return handlesArray[handleSlot];
     }
      
-    // TODO
-    private Handle find(String handle)
+    /**
+     * This method checks to see whether or not the given string exists in the 
+     * table.  
+     * @param handleString The string for the handle being looked for. 
+     * @return The slot of the item, or -1 if the item is not found. 
+     */
+    private int find(String handleString)
     {
-        return tombstone;
+        int strSlot = -1;
+        int homeSlot = hash(handleString, currentTableSize);
+        int slotCount = homeSlot;
+        int probeOffset = 1;
+        
+        while (handlesArray[slotCount] != null) // TODO: Might have to ensure that we do not reach the end of the array. 
+        {
+            if (getOffsetString(handlesArray[slotCount]).equals(handleString))
+            {
+                strSlot = slotCount;
+                break;
+            }
+            else
+            {
+                slotCount = (int) (homeSlot + Math.pow(probeOffset, 2)); 
+                probeOffset++;
+            }
+        }
+        return strSlot;
     }
     
     /**
@@ -85,12 +111,12 @@ public class HashTable {
         int slotCount = homeSlot;
         int probeOffset = 1;
         
-        if (find(handleString) != null)
+        if (find(handleString) == -1) // If doesn't already exist.  
         {
             while (handlesArray[slotCount] != null &&
                     !isTombstone(handlesArray[slotCount]))
             {
-                slotCount = homeSlot + probeOffset ^ 2; // TODO: Math pow
+                slotCount = (int) (homeSlot + Math.pow(probeOffset, 2)); 
                 probeOffset++;
             }
             
@@ -122,7 +148,7 @@ public class HashTable {
         // Probe until the correct string is found. 
         while (!getOffsetString(handlesArray[slotCount]).equals(strToDelete))
         {
-            slotCount = homeSlot + probeOffset ^ 2; // TODO: Math pow
+            slotCount = (int) (homeSlot + Math.pow(probeOffset, 2)); 
             probeOffset++;
         }
         
@@ -130,7 +156,7 @@ public class HashTable {
         slotsOccupied--;
         occupiedIndecies.remove(slotCount);
         
-        return -1;
+        return slotCount;
     }
     
     /**
@@ -143,7 +169,7 @@ public class HashTable {
         Handle[] temp = handlesArray;
         handlesArray = new Handle[currentTableSize * 2];
         
-        // Get all occupied indecies and rehash them to thenew table. 
+        // Get all occupied indecies and rehash them to the new table. 
         for (int i = 0; i < occupiedIndecies.size(); i++)
         {
             Handle toInsert = temp[occupiedIndecies.get(i)];
