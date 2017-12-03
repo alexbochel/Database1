@@ -14,7 +14,7 @@ public class HashTable {
     private int slotsOccupied;     
     private ArrayList<Integer> occupiedIndecies;
     private Handle[] handlesArray;  
-    private Handle tombstone; // Tombstone handle: Do not rehash these. 
+    private Handle tombstone; 
     private MemoryManager memManager;
     private boolean isSongTable = false;
     
@@ -27,7 +27,7 @@ public class HashTable {
      */
     public HashTable(int size, MemoryManager manager, boolean isSong)
     {
-        memManager = manager; // TODO: Does this update as mem manager updates in database?
+        memManager = manager;
         isSongTable = isSong;
         initialSize = size;
         occupiedIndecies = new ArrayList<Integer>();
@@ -56,7 +56,11 @@ public class HashTable {
         return handle.getOffset() == -1;
     }
     
-    // TODO
+    /**
+     * This method returns the handle for a given string name/artist. 
+     * @param string Name/Artist being looked for. 
+     * @return Handle that correspons with the given name/artist. 
+     */
     public Handle getEntry(String string)
     { 
         int handleSlot = find(string);
@@ -66,15 +70,11 @@ public class HashTable {
     /**
      * This method checks to see whether or not the given string exists in the 
      * table.  
-     * @param handle
-     * @return
+     * @param handleString The string for the handle being looked for. 
+     * @return The slot of the item, or -1 if the item is not found. 
      */
     private int find(String handleString)
     {
-        // 1. Hash to find slot.
-        // 2. Check if slot contains correct string. 
-        //      if so: Return the handle
-        //      if not: Quadratic probe until find handle.
         int strSlot = -1;
         int homeSlot = hash(handleString, currentTableSize);
         int slotCount = homeSlot;
@@ -156,7 +156,7 @@ public class HashTable {
         slotsOccupied--;
         occupiedIndecies.remove(slotCount);
         
-        return -1;
+        return slotCount;
     }
     
     /**
@@ -169,7 +169,7 @@ public class HashTable {
         Handle[] temp = handlesArray;
         handlesArray = new Handle[currentTableSize * 2];
         
-        // Get all occupied indecies and rehash them to thenew table. 
+        // Get all occupied indecies and rehash them to the new table. 
         for (int i = 0; i < occupiedIndecies.size(); i++)
         {
             Handle toInsert = temp[occupiedIndecies.get(i)];
