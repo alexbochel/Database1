@@ -13,7 +13,7 @@ public class Database
     byte[] names;
     byte[] artists;
     
-    public Database(String file)
+    public Database(int initialHashSize, int blockSize, String file)
     {
         //idk what to put here yet
         

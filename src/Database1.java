@@ -13,6 +13,8 @@ public class Database1
      */
     public static void main(String[] args)
     {
-        Database database = new Database(args[0]);
+        @SuppressWarnings("unused")
+        Database database = new Database(Integer.parseInt(args[0]),
+                Integer.parseInt(args[1]), args[2]);
     }
 }
