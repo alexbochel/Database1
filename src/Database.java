@@ -13,7 +13,7 @@ public class Database
     byte[] names;
     byte[] artists;
     
-    public Database(File name)
+    public Database(String file)
     {
         //idk what to put here yet
         
