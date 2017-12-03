@@ -58,16 +58,42 @@ public class HashTable {
     
     // TODO
     public Handle getEntry(String string)
-    {
-        Handle returnHandle = find(string);
-        
-        return returnHandle; // TODO: Do this nigga. 
+    { 
+        int handleSlot = find(string);
+        return handlesArray[handleSlot];
     }
      
-    // TODO
-    private Handle find(String handle)
+    /**
+     * This method checks to see whether or not the given string exists in the 
+     * table.  
+     * @param handle
+     * @return
+     */
+    private int find(String handleString)
     {
-        return tombstone;
+        // 1. Hash to find slot.
+        // 2. Check if slot contains correct string. 
+        //      if so: Return the handle
+        //      if not: Quadratic probe until find handle.
+        int strSlot = -1;
+        int homeSlot = hash(handleString, currentTableSize);
+        int slotCount = homeSlot;
+        int probeOffset = 1;
+        
+        while (handlesArray[slotCount] != null) // TODO: Might have to ensure that we do not reach the end of the array. 
+        {
+            if (getOffsetString(handlesArray[slotCount]).equals(handleString))
+            {
+                strSlot = slotCount;
+                break;
+            }
+            else
+            {
+                slotCount = (int) (homeSlot + Math.pow(probeOffset, 2)); 
+                probeOffset++;
+            }
+        }
+        return strSlot;
     }
     
     /**
@@ -85,12 +111,12 @@ public class HashTable {
         int slotCount = homeSlot;
         int probeOffset = 1;
         
-        if (find(handleString) != null)
+        if (find(handleString) == -1) // If doesn't already exist.  
         {
             while (handlesArray[slotCount] != null &&
                     !isTombstone(handlesArray[slotCount]))
             {
-                slotCount = homeSlot + probeOffset ^ 2; // TODO: Math pow
+                slotCount = (int) (homeSlot + Math.pow(probeOffset, 2)); 
                 probeOffset++;
             }
             
@@ -122,7 +148,7 @@ public class HashTable {
         // Probe until the correct string is found. 
         while (!getOffsetString(handlesArray[slotCount]).equals(strToDelete))
         {
-            slotCount = homeSlot + probeOffset ^ 2; // TODO: Math pow
+            slotCount = (int) (homeSlot + Math.pow(probeOffset, 2)); 
             probeOffset++;
         }
         
