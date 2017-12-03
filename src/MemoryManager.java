@@ -47,7 +47,7 @@ public class MemoryManager
     {
         if (nameSize + name.getBytes().length > songCapacity)
         {
-            this.expandArray(songNames);
+            this.expandNameArray();
             songCapacity = songNames.length;
         }
 
@@ -70,7 +70,7 @@ public class MemoryManager
     {
         if (artistSize + artist.getBytes().length > artistCapacity)
         {
-            this.expandArray(artistNames);
+            this.expandArtistArray();
             artistCapacity = artistNames.length;
         }
 
@@ -83,13 +83,13 @@ public class MemoryManager
 
 
     /**
-     * Deletes a song from the songNames byte array by setting the first byte to
-     * 0, thus indicating that it is inactive
+     * Deletes a song name from the songNames byte array by setting the first
+     * byte to 0, thus indicating that it is inactive
      * 
      * @param offset
      *            is the position in the byte array to set to 0
      */
-    public void deleteSong(int offset)
+    public void deleteName(int offset)
     {
         songNames[offset] = 0;
     }
@@ -109,16 +109,28 @@ public class MemoryManager
 
 
     /**
-     * Expands the byte array arr if it is too small to hold the next entry. It
-     * doubles the current capacity of the array.
-     * 
-     * @param arr
-     *            is the byte array to make bigger
+     * Exapnds the byte array that holds the names of the artists if the array
+     * is too small to hold the next entry. It expands the array by doubling the
+     * size.
      */
-    public void expandArray(byte[] arr)
+    public void expandArtistArray()
     {
-        byte[] newArr = new byte[arr.length * 2];
-        System.arraycopy(arr, 0, newArr, 0, arr.length);
+        byte[] newArr = new byte[artistNames.length * 2];
+        System.arraycopy(artistNames, 0, newArr, 0, artistNames.length);
+        artistNames = newArr;
+    }
+
+
+    /**
+     * Exapnds the byte array that holds the names of the songs if the array is
+     * too small to hold the next entry. It expands the array by doubling the
+     * size.
+     */
+    public void expandNameArray()
+    {
+        byte[] newArr = new byte[songNames.length * 2];
+        System.arraycopy(songNames, 0, newArr, 0, songNames.length);
+        songNames = newArr;
     }
 
 
@@ -198,5 +210,51 @@ public class MemoryManager
     {
         int asInt = java.nio.ByteBuffer.wrap(bytes).getInt();
         return asInt;
+    }
+
+
+    /**
+     * Getter method for the byte array that holds the song names
+     * 
+     * @return the songNames field, which is a byte array
+     */
+    public byte[] getSongNames()
+    {
+        return songNames;
+    }
+
+
+    /**
+     * Getter method for the byte array that holds the artist names
+     * 
+     * @return the artistNames field, which is a byte array
+     */
+    public byte[] getArtistNames()
+    {
+        return artistNames;
+    }
+
+
+    /**
+     * Getter method for the current size of the songNames array. In this
+     * context, size is the number of elements in the array
+     * 
+     * @return the nameSize field, which is an int
+     */
+    public int getNameSize()
+    {
+        return nameSize;
+    }
+
+
+    /**
+     * Getter method for the current size of the artistNames array. In this
+     * context, size is the number of elements in the array
+     * 
+     * @return the artistSize field, which is an int
+     */
+    public int getArtistSize()
+    {
+        return artistSize;
     }
 }
