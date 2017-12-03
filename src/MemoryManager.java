@@ -27,6 +27,25 @@ public class MemoryManager {
         artistNames = new byte[initialSize];
     }
     
+    // TODO: Two inserts, deletes, and expansion methods? --------------------
+    
+    public void insert()
+    {
+        // TODO: Append new byte array to end of the database. 
+    }
+    
+    public void delete()
+    {
+        // TODO: Simply set to inactive. 
+    }
+    
+    public void expandArray(byte[] array)
+    {
+        // TODO: Make array twice as big when size is not enough. 
+    }
+    
+    // -----------------------------------------------------------------------
+    
     /**
      * This uses an offset to find a String representation of the song. 
      * @param offset Place in array for song. 
