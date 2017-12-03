@@ -87,6 +87,8 @@ public class BinarySearchTreeTest extends student.TestCase {
         assertTrue(bigTree.delete(8));
         assertTrue(bigTree.delete(22));
         assertTrue(bigTree.delete(25));
+        assertTrue(bigTree.delete(5));
+        assertTrue(bigTree.isEmpty());
     }
     
     /**
