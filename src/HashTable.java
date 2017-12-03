@@ -108,8 +108,8 @@ public class HashTable {
     }
     
     /**
-     *  This method "removes" a specified element from the hashtable by 
-     *  replacing it with a tombstone. 
+     * This method "removes" a specified element from the hashtable by 
+     * replacing it with a tombstone. 
      * @param strToDelete The artist/song that will be deleted from the table. 
      * @return The slot from which the item was deleted. 
      */
