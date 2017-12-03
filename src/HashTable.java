@@ -21,12 +21,16 @@ public class HashTable {
     /**
      * The hash constructor creates the Array for the table as well as sets
      * the count for the size of the table. 
+     * @param size Initial Size of the hashtable. 
+     * @param manager Memory Manager from the main database class. 
+     * @param isSong Is the hastable a song or artist table?
      */
     public HashTable(int size, MemoryManager manager, boolean isSong)
     {
         memManager = manager; // TODO: Does this update as mem manager updates in database?
         isSongTable = isSong;
         initialSize = size;
+        occupiedIndecies = new ArrayList<Integer>();
         handlesArray = new Handle[initialSize];
         currentTableSize = initialSize;
         slotsOccupied = 0; 
@@ -57,7 +61,7 @@ public class HashTable {
     {
         Handle returnHandle = find(string);
         
-        return tombstone; // TODO: Do this nigga. 
+        return returnHandle; // TODO: Do this nigga. 
     }
      
     // TODO
@@ -75,9 +79,7 @@ public class HashTable {
     public int insert(Handle handle)
     {
         // Handle string depends on type of table, song or artist. 
-        String handleString = isSongTable ? 
-                memManager.getSongString(handle.getOffset()) :
-                memManager.getArtistString(handle.getOffset());
+        String handleString = getOffsetString(handle);
                 
         int homeSlot = hash(handleString, currentTableSize);
         int slotCount = homeSlot;
@@ -92,7 +94,6 @@ public class HashTable {
                 probeOffset++;
             }
             
-            
             handlesArray[slotCount] = handle;
             slotsOccupied++;         
             occupiedIndecies.add(slotCount);
@@ -106,9 +107,29 @@ public class HashTable {
         return slotCount;
     }
     
-    // TODO: Do we need this? Yes. 
-    public int delete()
+    /**
+     *  This method "removes" a specified element from the hashtable by 
+     *  replacing it with a tombstone. 
+     * @param strToDelete The artist/song that will be deleted from the table. 
+     * @return The slot from which the item was deleted. 
+     */
+    public int delete(String strToDelete)
     {
+        int homeSlot = hash(strToDelete, currentTableSize);
+        int slotCount = homeSlot; 
+        int probeOffset = 1; 
+        
+        // Probe until the correct string is found. 
+        while (!getOffsetString(handlesArray[slotCount]).equals(strToDelete))
+        {
+            slotCount = homeSlot + probeOffset ^ 2; // TODO: Math pow
+            probeOffset++;
+        }
+        
+        handlesArray[slotCount] = tombstone;
+        slotsOccupied--;
+        occupiedIndecies.remove(slotCount);
+        
         return -1;
     }
     
@@ -139,7 +160,7 @@ public class HashTable {
      * @param m Table size. 
      * @return int Home slot in the table.  
      */
-    public int hash(String s, int m)
+    private int hash(String s, int m)
     {
         int intLength = s.length() / 4;
         long sum = 0;
@@ -162,5 +183,18 @@ public class HashTable {
             mult *= 256;
         }
         return (int)(Math.abs(sum) % m);
+    }
+    
+    /**
+     * This method returns either the artist or song string for a given offset
+     * based off of whether this table is acting as a song or artist table. 
+     * @param handle The handle containing the offset that we want to find. 
+     * @return String Song or artist name. 
+     */
+    private String getOffsetString(Handle handle)
+    {
+        return isSongTable ? 
+                memManager.getSongString(handle.getOffset()) :
+                memManager.getArtistString(handle.getOffset());
     }
 }

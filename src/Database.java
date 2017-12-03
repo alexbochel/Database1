@@ -9,7 +9,7 @@ import java.io.File;
  */
 public class Database
 {
-    
+    // TODO: Probs don't need. 
     byte[] names;
     byte[] artists;
     
