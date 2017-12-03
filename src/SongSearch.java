@@ -4,7 +4,7 @@
  * @author Alexander James Bochel
  * @version 12.2.2017
  */
-public class Database1 
+public class SongSearch 
 {
     /** 
      * This method creates the input class. 
