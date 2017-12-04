@@ -56,6 +56,11 @@ public class BinarySearchTree<T extends Comparable<? super T>>
     {
         return find(x, root);
     }
+    
+    public T findKey(T x)
+    {
+        return find(x, root);
+    }
 
 
     /**
@@ -66,6 +71,29 @@ public class BinarySearchTree<T extends Comparable<? super T>>
      * @return an element of a node
      */
     private T find(T x, BinaryNode<T> elemRoot)
+    {
+        if (elemRoot == null)
+        {
+            return null;
+        }
+
+        int compareResult = x.compareTo(elemRoot.element);
+
+        if (compareResult < 0)
+        {
+            return find(x, elemRoot.left);
+        }
+        else if (compareResult > 0)
+        {
+            return find(x, elemRoot.right);
+        }
+        else
+        {
+            return elemRoot.element;
+        }
+    }
+    
+    private T findKey(T x, BinaryNode<T> elemRoot)
     {
         if (elemRoot == null)
         {

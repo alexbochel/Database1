@@ -1,3 +1,5 @@
+import java.util.Iterator;
+
 /**
  * This class extends the BST and handles printing.
  * 
@@ -39,7 +41,7 @@ public class KVPairTree extends BinarySearchTree<KVPair>
                 .getOffset())
             {
                 // there is a duplicate in the tree already
-                
+
                 System.out.print("The KVPair (|");
 
                 if (isArtistTree)
@@ -65,7 +67,7 @@ public class KVPairTree extends BinarySearchTree<KVPair>
                     .getValue().getOffset());
 
                 System.out.print(" duplicates a record already in the tree.");
-                
+
                 return false;
             }
         }
@@ -99,30 +101,297 @@ public class KVPairTree extends BinarySearchTree<KVPair>
     }
 
 
-    public void remove(String name)
+    public void removeArtist(String name)
     {
+        Iterator<KVPair> iterator = this.iterator();
+
         if (isArtistTree)
         {
-            
+            while (iterator.hasNext())
+            {
+                KVPair pair = iterator.next();
+
+                if (memManager.getArtistString(pair.getKey().getOffset())
+                    .equals(name))
+                {
+                    System.out.print("The KVPair (|");
+
+                    if (isArtistTree)
+                    {
+                        System.out.print(memManager.getArtistString(pair
+                            .getKey().getOffset()));
+                        System.out.print("|,|");
+                        System.out.print(memManager.getSongString(pair
+                            .getValue().getOffset()));
+                        System.out.print("|),");
+                    }
+                    else
+                    {
+                        System.out.print(memManager.getSongString(pair.getKey()
+                            .getOffset()));
+                        System.out.print("|,|");
+                        System.out.print(memManager.getArtistString(pair
+                            .getValue().getOffset()));
+                        System.out.print("|),");
+                    }
+
+                    System.out.print(pair.getKey().getOffset() + "," + pair
+                        .getValue().getOffset());
+
+                    System.out.print(" is deleted from the tree.");
+                    super.delete(pair);
+                }
+            }
         }
-        
+        else
+        {
+            while (iterator.hasNext())
+            {
+                KVPair pair = iterator.next();
+
+                if (memManager.getArtistString(pair.getValue().getOffset())
+                    .equals(name))
+                {
+                    System.out.print("The KVPair (|");
+
+                    if (isArtistTree)
+                    {
+                        System.out.print(memManager.getArtistString(pair
+                            .getKey().getOffset()));
+                        System.out.print("|,|");
+                        System.out.print(memManager.getSongString(pair
+                            .getValue().getOffset()));
+                        System.out.print("|),");
+                    }
+                    else
+                    {
+                        System.out.print(memManager.getSongString(pair.getKey()
+                            .getOffset()));
+                        System.out.print("|,|");
+                        System.out.print(memManager.getArtistString(pair
+                            .getValue().getOffset()));
+                        System.out.print("|),");
+                    }
+
+                    System.out.print(pair.getKey().getOffset() + "," + pair
+                        .getValue().getOffset());
+
+                    System.out.print(" is deleted from the tree.");
+                    super.delete(pair);
+                }
+            }
+        }
     }
 
 
-    public void list()
+    public void removeName(String name)
     {
+        Iterator<KVPair> iterator = this.iterator();
 
+        if (isArtistTree)
+        {
+            while (iterator.hasNext())
+            {
+                KVPair pair = iterator.next();
+
+                if (memManager.getArtistString(pair.getValue().getOffset())
+                    .equals(name))
+                {
+                    System.out.print("The KVPair (|");
+
+                    if (isArtistTree)
+                    {
+                        System.out.print(memManager.getArtistString(pair
+                            .getKey().getOffset()));
+                        System.out.print("|,|");
+                        System.out.print(memManager.getSongString(pair
+                            .getValue().getOffset()));
+                        System.out.print("|),");
+                    }
+                    else
+                    {
+                        System.out.print(memManager.getSongString(pair.getKey()
+                            .getOffset()));
+                        System.out.print("|,|");
+                        System.out.print(memManager.getArtistString(pair
+                            .getValue().getOffset()));
+                        System.out.print("|),");
+                    }
+
+                    System.out.print(pair.getKey().getOffset() + "," + pair
+                        .getValue().getOffset());
+
+                    System.out.print(" is deleted from the tree.");
+                    super.delete(pair);
+                }
+            }
+        }
+        else
+        {
+            while (iterator.hasNext())
+            {
+                KVPair pair = iterator.next();
+
+                if (memManager.getArtistString(pair.getKey().getOffset())
+                    .equals(name))
+                {
+                    System.out.print("The KVPair (|");
+
+                    if (isArtistTree)
+                    {
+                        System.out.print(memManager.getArtistString(pair
+                            .getKey().getOffset()));
+                        System.out.print("|,|");
+                        System.out.print(memManager.getSongString(pair
+                            .getValue().getOffset()));
+                        System.out.print("|),");
+                    }
+                    else
+                    {
+                        System.out.print(memManager.getSongString(pair.getKey()
+                            .getOffset()));
+                        System.out.print("|,|");
+                        System.out.print(memManager.getArtistString(pair
+                            .getValue().getOffset()));
+                        System.out.print("|),");
+                    }
+
+                    System.out.print(pair.getKey().getOffset() + "," + pair
+                        .getValue().getOffset());
+
+                    System.out.print(" is deleted from the tree.");
+                    super.delete(pair);
+                }
+            }
+        }
     }
 
 
-    public void delete()
+    public void listArtist(String artist)
     {
+        Iterator<KVPair> iterator = this.iterator();
 
+        if (isArtistTree)
+        {
+            while (iterator.hasNext())
+            {
+                KVPair pair = iterator.next();
+
+                if (pair.getKey().equals(artist))
+                {
+                    // TODO figure out how to format list
+                }
+            }
+        }
+        else
+        {
+            while (iterator.hasNext())
+            {
+                KVPair pair = iterator.next();
+
+                if (pair.getValue().equals(artist))
+                {
+                    // TODO figure out how to format list
+                }
+            }
+        }
+    }
+
+
+    public void listSong(String name)
+    {
+        Iterator<KVPair> iterator = this.iterator();
+
+        if (isArtistTree)
+        {
+            while (iterator.hasNext())
+            {
+                KVPair pair = iterator.next();
+
+                if (pair.getValue().equals(name))
+                {
+                    // TODO figure out how to format list
+                }
+            }
+        }
+        else
+        {
+            while (iterator.hasNext())
+            {
+                KVPair pair = iterator.next();
+
+                if (pair.getKey().equals(name))
+                {
+                    // TODO figure out how to format list
+                }
+            }
+        }
+    }
+
+
+    public void delete(String artist, String name)
+    {
+        Iterator<KVPair> iterator = this.iterator();
+        boolean found = false;
+
+        if (isArtistTree)
+        {
+            while (iterator.hasNext())
+            {
+                KVPair pair = iterator.next();
+
+                // if artists are the same
+                if (memManager.getArtistString(pair.getKey().getOffset())
+                    .equals(artist))
+                {
+                    // if song name also matches
+                    if (memManager.getSongString(pair.getValue().getOffset())
+                        .equals(name))
+                    {
+                        found = true;
+                        // TODO print it out
+                        super.delete(pair);
+                    }
+                }
+            }
+
+            if (!found)
+            {
+                // TODO print out that it wasn't there
+            }
+        }
+        else
+        {
+            while (iterator.hasNext())
+            {
+                KVPair pair = iterator.next();
+
+                // if artists are the same
+                if (memManager.getArtistString(pair.getValue().getOffset())
+                    .equals(artist))
+                {
+                    // if song name also matches
+                    if (memManager.getSongString(pair.getKey().getOffset())
+                        .equals(name))
+                    {
+                        found = true;
+                        // TODO print it out
+                        super.delete(pair);
+                    }
+                }
+            }
+
+            if (!found)
+            {
+                // TODO print out that it wasn't there
+            }
+
+        }
     }
 
 
     public void printTree()
     {
-
+        
     }
 }
