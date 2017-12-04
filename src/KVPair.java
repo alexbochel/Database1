@@ -5,7 +5,7 @@
  * @author Brady Engleman and Alex Bochel
  * @version 12/2/2017
  */
-public class KVPair
+public class KVPair implements Comparable<KVPair>
 {
     private Handle key;
     private Handle value;
@@ -44,5 +44,24 @@ public class KVPair
     public Handle getValue()
     {
         return value;
+    }
+
+
+    /**
+     * Method to compare two KVPair objects. It will call the compareTo method
+     * of the key Handles. If they are the same, then the method will compare
+     * the value Handles
+     * 
+     * @return an int that will tell the BST which KVPair is "larger" than the
+     *         other
+     */
+    public int compareTo(KVPair pair2)
+    {
+        if (this.getKey().compareTo(pair2.getKey()) != 0)
+        {
+            return this.getKey().compareTo(pair2.getKey());
+        }
+
+        return this.getValue().compareTo(pair2.getValue());
     }
 }
