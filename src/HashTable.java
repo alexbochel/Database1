@@ -186,7 +186,7 @@ public class HashTable {
      * @param m Table size. 
      * @return int Home slot in the table.  
      */
-    private int hash(String s, int m)
+    public int hash(String s, int m)
     {
         int intLength = s.length() / 4;
         long sum = 0;

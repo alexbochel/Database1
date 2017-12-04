@@ -208,7 +208,7 @@ public class MemoryManager
      */
     private int bytesToInt(byte[] bytes)
     {
-        int asInt = java.nio.ByteBuffer.wrap(bytes).getInt();
+        int asInt = bytes[0] | bytes[1] << 8;
         return asInt;
     }
 
