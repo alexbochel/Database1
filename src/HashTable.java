@@ -47,6 +47,15 @@ public class HashTable {
     }
     
     /**
+     * This method gets the actual array table. 
+     * @return Table. 
+     */
+    public Handle[] getTable()
+    {
+        return handlesArray;
+    }
+    
+    /**
      * This method determines whether or not a given handle is a tombstone
      * by checking to see if it's value is -1. 
      * @return Whether or not handle is tombstone. 
@@ -167,12 +176,15 @@ public class HashTable {
     {
         // Initialize new array with twice the space. 
         Handle[] temp = handlesArray;
-        handlesArray = new Handle[currentTableSize * 2];
-        
+        currentTableSize = currentTableSize * 2;
+        handlesArray = new Handle[currentTableSize];
+        ArrayList<Integer> oldIndecies = occupiedIndecies;
+        occupiedIndecies.clear();
         // Get all occupied indecies and rehash them to the new table. 
-        for (int i = 0; i < occupiedIndecies.size(); i++)
+        for (int i = 0; i < oldIndecies.size(); i++)
         {
-            Handle toInsert = temp[occupiedIndecies.get(i)];
+            Handle toInsert = temp[oldIndecies.get(i)];
+            slotsOccupied--;
             insert(toInsert);
         }
     }

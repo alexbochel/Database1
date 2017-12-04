@@ -9,12 +9,12 @@ public class HashTableTest extends student.TestCase {
     
     private MemoryManager memManager;
     private HashTable artistTable;
-    private HashTable songTable;
     private Handle handle;
     private Handle handle2;
     private Handle handle3;
     private Handle handle4;
     private Handle handle5;
+    private Handle handle6;
     
     /**
      * This method sets up the testing environment for the test class. 
@@ -28,10 +28,19 @@ public class HashTableTest extends student.TestCase {
         memManager.insertArtist("The Beatles");
         handle2 = new Handle(memManager.getArtistSize());
         memManager.insertArtist("EDEN"); 
+        handle3 = new Handle(memManager.getArtistSize());
+        memManager.insertArtist("Sum 41");
+        handle4 = new Handle(memManager.getArtistSize());
+        memManager.insertArtist("Radical Face");
+        handle5 = new Handle(memManager.getArtistSize());
+        memManager.insertArtist("Owl City");
+        handle6 = new Handle(memManager.getArtistSize());
+        memManager.insertArtist("Soulstice");
         
-        songTable = new HashTable(10, memManager, true);
         artistTable = new HashTable(10, memManager, false);
-        
+        artistTable.insert(handle);
+        artistTable.insert(handle2);
+        artistTable.insert(handle3);
     }
     
     /**
@@ -39,10 +48,12 @@ public class HashTableTest extends student.TestCase {
      */
     public void testHash()
     {
-        // First Times
+        // Added
         System.out.println(artistTable.hash("The Beatles", 10));
         System.out.println(artistTable.hash("EDEN", 10));
         System.out.println(artistTable.hash("Sum 41", 10));
+        
+        // Not added but not dupes
         System.out.println(artistTable.hash("Soulstice", 10));
         System.out.println(artistTable.hash("Bon Jovi", 10));
         System.out.println(artistTable.hash("Prince", 10));
@@ -50,7 +61,7 @@ public class HashTableTest extends student.TestCase {
         // Repeats
         System.out.println(artistTable.hash("Radical Face", 10));
         System.out.println(artistTable.hash("Owl City", 10));
-        System.out.println(artistTable.hash("Sia", 10));
+        System.out.println(artistTable.hash("The Bums", 10));
     }
     
     /**
@@ -59,9 +70,12 @@ public class HashTableTest extends student.TestCase {
      */
     public void testInsert()
     {
-        artistTable.insert(handle);
-        artistTable.insert(handle2);
-        //assertEquals();
+        assertEquals(handle.getOffset(), 
+                artistTable.getTable()[0].getOffset());
+        assertEquals(handle2.getOffset(), 
+                artistTable.getTable()[9].getOffset());
+        assertEquals(handle3.getOffset(), 
+                artistTable.getTable()[7].getOffset());
     }
     
     /**
@@ -70,7 +84,9 @@ public class HashTableTest extends student.TestCase {
      */
     public void testInsertWithProbing()
     {
-        
+        artistTable.insert(handle4);
+        assertEquals(handle4.getOffset(), 
+                artistTable.getTable()[8].getOffset());
     }
     
     /**
@@ -94,6 +110,8 @@ public class HashTableTest extends student.TestCase {
      */
     public void testExpandTable()
     {
-        
+        artistTable.insert(handle4);
+        artistTable.insert(handle5);
+        artistTable.insert(handle6);
     }
 }
