@@ -197,9 +197,11 @@ public class MemoryManager
      */
     public String getArtistString(int offset)
     {
-        byte[] artistByteLength = new byte[2];
-        artistByteLength[0] = artistNames[offset + OFFSET_LENGTH_ONE];
-        artistByteLength[1] = artistNames[offset + OFFSET_LENGTH_TWO];
+        byte[] artistByteLength = new byte[4];
+        artistByteLength[0] = 0;
+        artistByteLength[1] = 0;
+        artistByteLength[2] = artistNames[offset + OFFSET_LENGTH_ONE];
+        artistByteLength[3] = artistNames[offset + OFFSET_LENGTH_TWO];
         int length = bytesToInt(artistByteLength);
 
         byte[] artistStringBytes = new byte[length];
@@ -229,7 +231,7 @@ public class MemoryManager
      */
     private int bytesToInt(byte[] bytes)
     {
-        int asInt = bytes[0] | bytes[1] << 8;
+        int asInt = ByteBuffer.wrap(bytes).getInt();
         return asInt;
     }
 
