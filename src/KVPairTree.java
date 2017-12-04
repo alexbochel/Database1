@@ -5,12 +5,12 @@
  * @version 12.3.2017
  * 
  */
-public class HandleTree extends BinarySearchTree<Handle> {
+public class KVPairTree extends BinarySearchTree<KVPair> {
     
     /**
      * This constructor calls the BST constructor. 
      */
-    public HandleTree()
+    public KVPairTree()
     {
         super();
     }
@@ -19,9 +19,9 @@ public class HandleTree extends BinarySearchTree<Handle> {
      * This method inserts a Handle into the tree. 
      * @param handle The handle being inserted. 
      */
-    public boolean insert(Handle handle)
+    public boolean insert(KVPair pair)
     {
-        return super.insert(handle);
+        return super.insert(pair);
     }
     
     public void remove()
