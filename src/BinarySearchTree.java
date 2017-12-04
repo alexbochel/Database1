@@ -145,6 +145,11 @@ public class BinarySearchTree<T extends Comparable<? super T>>
      */
     public boolean delete(T x)
     {
+        if (this.find(x) == null)
+        {
+            return false;
+        }
+        
         root = this.delete(x, root);
         return (root != null);
     }
@@ -231,6 +236,17 @@ public class BinarySearchTree<T extends Comparable<? super T>>
             elemRoot = elemRoot.left;
         }
         return minv;
+    }
+
+
+    /**
+     * This method will call the inOrderDump method with the root as the
+     * parameter. This way, the user does not have to access the root of the
+     * tree every time they want to dump the tree
+     */
+    public void dump()
+    {
+        this.inOrderDump(root);
     }
 
 
@@ -434,7 +450,7 @@ public class BinarySearchTree<T extends Comparable<? super T>>
     }
 
 
-    public void inOrderDump(BinaryNode<T> treeRoot)
+    private void inOrderDump(BinaryNode<T> treeRoot)
     {
         if (treeRoot == null)
         {
@@ -450,12 +466,14 @@ public class BinarySearchTree<T extends Comparable<? super T>>
         // TODO Indenting and Info for the current note
         for (int i = 0; i < treeRoot.getDepth() * 2; i++)
         {
-            System.out.println(" ");
+            System.out.print(" ");
         }
+        
+        System.out.print("Depth: " + this.getHeight(treeRoot.getElement()) + ". ");
 
-        System.out.print(((KVPair)treeRoot.getElement()).getKey());
+        System.out.print(((KVPair)treeRoot.getElement()).getKey().getOffset());
         System.out.print(" ");
-        System.out.println(((KVPair)treeRoot.getElement()).getValue());
+        System.out.println(((KVPair)treeRoot.getElement()).getValue().getOffset());
 
         // recursively traverse right tree:
         if (treeRoot.getRight() != null)
