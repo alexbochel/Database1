@@ -267,68 +267,43 @@ public class KVPairTree extends BinarySearchTree<KVPair>
     }
 
 
+    /**
+     * This method calls the listDumpArtist helper method, which will be called
+     * whenever the "list" command is called. It will print out information
+     * about the Artist "artist"
+     * 
+     * @param artist
+     *            is the name of the artist to list information about
+     */
     public void listArtist(String artist)
     {
-        Iterator<KVPair> iterator = this.iterator();
-
-        if (isArtistTree)
-        {
-            while (iterator.hasNext())
-            {
-                KVPair pair = iterator.next();
-
-                if (pair.getKey().equals(artist))
-                {
-                    // TODO figure out how to format list
-                }
-            }
-        }
-        else
-        {
-            while (iterator.hasNext())
-            {
-                KVPair pair = iterator.next();
-
-                if (pair.getValue().equals(artist))
-                {
-                    // TODO figure out how to format list
-                }
-            }
-        }
+        this.listDumpArtist(super.getRoot(), artist);
     }
 
 
+    /**
+     * This method calls the listDumpSong helper method, which will be called
+     * whenever the "list" command is called. It will print out information
+     * about the Song with the name "name"
+     * 
+     * @param name
+     *            is the name of the song to list information about
+     */
     public void listSong(String name)
     {
-        Iterator<KVPair> iterator = this.iterator();
-
-        if (isArtistTree)
-        {
-            while (iterator.hasNext())
-            {
-                KVPair pair = iterator.next();
-
-                if (pair.getValue().equals(name))
-                {
-                    // TODO figure out how to format list
-                }
-            }
-        }
-        else
-        {
-            while (iterator.hasNext())
-            {
-                KVPair pair = iterator.next();
-
-                if (pair.getKey().equals(name))
-                {
-                    // TODO figure out how to format list
-                }
-            }
-        }
+        this.listDumpSong(super.getRoot(), name);
     }
 
 
+    /**
+     * This method will iterate through the tree to delete the KVPair that
+     * contains the Artist "artist" with the song name "name"
+     * 
+     * @param artist
+     *            the name of the artist to delete
+     * @param name
+     *            the name of the song to delete
+     */
     public void delete(String artist, String name)
     {
         Iterator<KVPair> iterator = this.iterator();
@@ -390,8 +365,111 @@ public class KVPairTree extends BinarySearchTree<KVPair>
     }
 
 
+    /**
+     * This method calls the super's dump method, which does an in order
+     * traversal through the tree and lists information about each KVPair
+     */
     public void printTree()
     {
-        
+        super.dump();
     }
+
+
+    /**
+     * This method will do an in-order traversal through the tree and print out
+     * artists that match the artist we are trying to list
+     * 
+     * @param treeRoot
+     *            the root of the tree, for starting the traversal
+     * @param artist
+     *            the name of the artist we are looking for
+     */
+    private void listDumpArtist(BinaryNode<KVPair> treeRoot, String artist)
+    {
+        if (treeRoot == null)
+        {
+            return;
+        }
+
+        // recursively traverse left tree:
+        if (treeRoot.getLeft() != null)
+        {
+            listDumpArtist(treeRoot.getLeft(), artist);
+        }
+
+        if (isArtistTree)
+        {
+            // If artist in the KVPair matches the artist we are trying to list
+            if (memManager.getArtistString(((KVPair)treeRoot.getElement())
+                .getKey().getOffset()).equals(artist))
+            {
+                // TODO print it out
+            }
+        }
+        else
+        {
+            // If artist in the KVPair matches the artist we are trying to list
+            if (memManager.getArtistString(((KVPair)treeRoot.getElement())
+                .getValue().getOffset()).equals(artist))
+            {
+                // TODO print it out
+            }
+        }
+
+        // recursively traverse right tree:
+        if (treeRoot.getRight() != null)
+        {
+            listDumpArtist(treeRoot.getRight(), artist);
+        }
+    }
+
+
+    /**
+     * This method will do an in-order traversal through the tree and print out
+     * songs that match the song we are trying to list
+     * 
+     * @param treeRoot
+     *            the root of the tree, for starting the traversal
+     * @param name
+     *            the name of the song we are looking for
+     */
+    private void listDumpSong(BinaryNode<KVPair> treeRoot, String name)
+    {
+        if (treeRoot == null)
+        {
+            return;
+        }
+
+        // recursively traverse left tree:
+        if (treeRoot.getLeft() != null)
+        {
+            listDumpSong(treeRoot.getLeft(), name);
+        }
+
+        if (isArtistTree)
+        {
+            // If artist in the KVPair matches the artist we are trying to list
+            if (memManager.getSongString(((KVPair)treeRoot.getElement())
+                .getValue().getOffset()).equals(name))
+            {
+                // TODO print it out
+            }
+        }
+        else
+        {
+            // If artist in the KVPair matches the artist we are trying to list
+            if (memManager.getSongString(((KVPair)treeRoot.getElement())
+                .getKey().getOffset()).equals(name))
+            {
+                // TODO print it out
+            }
+        }
+
+        // recursively traverse right tree:
+        if (treeRoot.getRight() != null)
+        {
+            listDumpSong(treeRoot.getRight(), name);
+        }
+    }
+
 }

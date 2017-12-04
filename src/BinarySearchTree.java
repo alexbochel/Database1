@@ -26,6 +26,17 @@ public class BinarySearchTree<T extends Comparable<? super T>>
 
 
     /**
+     * Getter method for the root of the tree
+     * 
+     * @return the root of this tree as a BinaryNode
+     */
+    public BinaryNode<T> getRoot()
+    {
+        return root;
+    }
+
+
+    /**
      * Empties the binary search tree.
      */
     public void makeEmpty()
@@ -56,7 +67,8 @@ public class BinarySearchTree<T extends Comparable<? super T>>
     {
         return find(x, root);
     }
-    
+
+
     public T findKey(T x)
     {
         return find(x, root);
@@ -92,7 +104,8 @@ public class BinarySearchTree<T extends Comparable<? super T>>
             return elemRoot.element;
         }
     }
-    
+
+
     private T findKey(T x, BinaryNode<T> elemRoot)
     {
         if (elemRoot == null)
@@ -177,7 +190,7 @@ public class BinarySearchTree<T extends Comparable<? super T>>
         {
             return false;
         }
-        
+
         root = this.delete(x, root);
         return (root != null);
     }
@@ -285,7 +298,7 @@ public class BinarySearchTree<T extends Comparable<? super T>>
      * @param <T>
      *            The generic type.
      */
-    private static class BinaryNode<T>
+    public static class BinaryNode<T>
     {
         private BinaryNode<T> right;
         private BinaryNode<T> left;
@@ -496,12 +509,14 @@ public class BinarySearchTree<T extends Comparable<? super T>>
         {
             System.out.print(" ");
         }
-        
-        System.out.print("Depth: " + this.getHeight(treeRoot.getElement()) + ". ");
+
+        System.out.print("Depth: " + this.getHeight(treeRoot.getElement())
+            + ". ");
 
         System.out.print(((KVPair)treeRoot.getElement()).getKey().getOffset());
         System.out.print(" ");
-        System.out.println(((KVPair)treeRoot.getElement()).getValue().getOffset());
+        System.out.println(((KVPair)treeRoot.getElement()).getValue()
+            .getOffset());
 
         // recursively traverse right tree:
         if (treeRoot.getRight() != null)
