@@ -60,9 +60,9 @@ public class MemoryManagerTest extends student.TestCase
         memManager.deleteName(10);
 
         assertEquals(0, memManager.getSongNames()[0]);
-        assertTrue(memManager.getSongNames()[1] != 0);
+        assertTrue(memManager.getSongNames()[4] != 0);
         assertEquals(0, memManager.getSongNames()[10]);
-        assertTrue(memManager.getSongNames()[11] != 0);
+        assertTrue(memManager.getSongNames()[15] != 0);
     }
 
 
@@ -78,9 +78,9 @@ public class MemoryManagerTest extends student.TestCase
         memManager.deleteArtist(14);
 
         assertEquals(0, memManager.getArtistNames()[0]);
-        assertTrue(memManager.getArtistNames()[1] != 0);
+        assertTrue(memManager.getArtistNames()[5] != 0);
         assertEquals(0, memManager.getArtistNames()[14]);
-        assertTrue(memManager.getArtistNames()[15] != 0);
+        assertTrue(memManager.getArtistNames()[17] != 0);
     }
 
 
@@ -93,7 +93,7 @@ public class MemoryManagerTest extends student.TestCase
     {
         assertEquals(100, memManager.getArtistNames().length);
 
-        for (int i = 0; i < 15; i++)
+        for (int i = 0; i < 10; i++)
         {
             memManager.insertArtist("The Beatles");
         }
