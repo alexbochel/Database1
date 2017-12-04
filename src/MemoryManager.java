@@ -1,4 +1,5 @@
 import java.io.UnsupportedEncodingException;
+import java.nio.ByteBuffer;
 
 /**
  * This class contains byte arrays as well as management tools for the artists
@@ -51,6 +52,15 @@ public class MemoryManager
             songCapacity = songNames.length;
         }
 
+        songNames[nameSize] = 1; // Set the name to be active
+        nameSize++;
+
+        for (byte b : ByteBuffer.allocate(2).putInt(name.length()).array())
+        {
+            songNames[nameSize] = b;
+            nameSize++;
+        }
+
         for (byte b : name.getBytes())
         {
             songNames[nameSize] = b;
@@ -72,6 +82,15 @@ public class MemoryManager
         {
             this.expandArtistArray();
             artistCapacity = artistNames.length;
+        }
+
+        artistNames[artistSize] = 1; // Set the name to be active
+        artistSize++;
+
+        for (byte b : ByteBuffer.allocate(2).putInt(artist.length()).array())
+        {
+            artistNames[nameSize] = b;
+            artistSize++;
         }
 
         for (byte b : artist.getBytes())

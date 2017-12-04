@@ -27,10 +27,10 @@ public class MemoryManagerTest extends student.TestCase
     public void testInsertArtist()
     {
         memManager.insertArtist("The Beatles");
-        assertEquals(11, memManager.getArtistSize());
+        assertEquals(14, memManager.getArtistSize());
 
         memManager.insertArtist("EDEN");
-        assertEquals(15, memManager.getArtistSize());
+        assertEquals(21, memManager.getArtistSize());
     }
 
 
@@ -41,10 +41,10 @@ public class MemoryManagerTest extends student.TestCase
     public void testInsertName()
     {
         memManager.insertName("Shelter");
-        assertEquals(7, memManager.getNameSize());
+        assertEquals(10, memManager.getNameSize());
 
         memManager.insertName("Riptide");
-        assertEquals(14, memManager.getNameSize());
+        assertEquals(20, memManager.getNameSize());
     }
 
 
@@ -57,12 +57,12 @@ public class MemoryManagerTest extends student.TestCase
         memManager.insertName("Shelter");
         memManager.insertName("Riptide");
         memManager.deleteName(0);
-        memManager.deleteName(7);
+        memManager.deleteName(10);
 
         assertEquals(0, memManager.getSongNames()[0]);
         assertTrue(memManager.getSongNames()[1] != 0);
-        assertEquals(0, memManager.getSongNames()[7]);
-        assertTrue(memManager.getSongNames()[8] != 0);
+        assertEquals(0, memManager.getSongNames()[10]);
+        assertTrue(memManager.getSongNames()[11] != 0);
     }
 
 
@@ -75,12 +75,12 @@ public class MemoryManagerTest extends student.TestCase
         memManager.insertArtist("The Beatles");
         memManager.insertArtist("EDEN");
         memManager.deleteArtist(0);
-        memManager.deleteArtist(11);
+        memManager.deleteArtist(14);
 
         assertEquals(0, memManager.getArtistNames()[0]);
         assertTrue(memManager.getArtistNames()[1] != 0);
-        assertEquals(0, memManager.getArtistNames()[11]);
-        assertTrue(memManager.getArtistNames()[12] != 0);
+        assertEquals(0, memManager.getArtistNames()[14]);
+        assertTrue(memManager.getArtistNames()[15] != 0);
     }
 
 
