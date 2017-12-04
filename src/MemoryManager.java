@@ -55,9 +55,10 @@ public class MemoryManager
         songNames[nameSize] = 1; // Set the name to be active
         nameSize++;
 
-        for (byte b : ByteBuffer.allocate(2).putInt(name.length()).array())
+        for (int i = 2; i < 4; i++)
         {
-            songNames[nameSize] = b;
+            songNames[nameSize] = ByteBuffer.allocate(4).putInt(name.length())
+                .array()[i];
             nameSize++;
         }
 
@@ -87,9 +88,10 @@ public class MemoryManager
         artistNames[artistSize] = 1; // Set the name to be active
         artistSize++;
 
-        for (byte b : ByteBuffer.allocate(2).putInt(artist.length()).array())
+        for (int i = 2; i < 4; i++)
         {
-            artistNames[nameSize] = b;
+            artistNames[artistSize] = ByteBuffer.allocate(4).putInt(artist
+                .length()).array()[i];
             artistSize++;
         }
 
