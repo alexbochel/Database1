@@ -61,6 +61,7 @@ public class KVPairTree extends BinarySearchTree<KVPair>
                     System.out.print(memManager.getArtistString(pair.getValue()
                         .getOffset()));
                     System.out.print("|),");
+                    
                 }
 
                 System.out.print(pair.getKey().getOffset() + "," + pair
@@ -98,6 +99,7 @@ public class KVPairTree extends BinarySearchTree<KVPair>
 
         System.out.print(" is added to the tree.");
         return super.insert(pair);
+        
     }
 
 
