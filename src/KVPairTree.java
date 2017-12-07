@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
@@ -61,7 +62,7 @@ public class KVPairTree extends BinarySearchTree<KVPair>
                     System.out.print(memManager.getArtistString(pair.getValue()
                         .getOffset()));
                     System.out.print("|),");
-                    
+
                 }
 
                 System.out.print(pair.getKey().getOffset() + "," + pair
@@ -99,11 +100,11 @@ public class KVPairTree extends BinarySearchTree<KVPair>
 
         System.out.print(" is added to the tree.");
         return super.insert(pair);
-        
+
     }
 
 
-    public void removeArtist(String artist)
+    public boolean removeArtist(String artist)
     {
         Iterator<KVPair> iterator = this.iterator();
         boolean found = false;
@@ -200,11 +201,14 @@ public class KVPairTree extends BinarySearchTree<KVPair>
         {
             System.out.println(artist
                 + " does not exist in the artist database.");
+            return false;
         }
+
+        return true;
     }
 
 
-    public void removeName(String name)
+    public boolean removeName(String name)
     {
         Iterator<KVPair> iterator = this.iterator();
 
@@ -268,14 +272,76 @@ public class KVPairTree extends BinarySearchTree<KVPair>
                     super.delete(pair);
                 }
             }
+        }
 
-            // Song was not in the tree
-            if (!found)
+        // Song was not in the tree
+        if (!found)
+        {
+            System.out.println(name + " does not exist in the song database.");
+            return false;
+        }
+
+        return true;
+    }
+
+
+    public String[] getAllSongsFromArtist(String artist)
+    {
+        ArrayList<String> songList = new ArrayList<String>();
+        Iterator<KVPair> iterator = this.iterator();
+
+        if (isArtistTree)
+        {
+            while (iterator.hasNext())
             {
-                System.out.println(name
-                    + " does not exist in the song database.");
+                KVPair pair = iterator.next();
+
+                // Artist matches what we are looking for
+                if (memManager.getArtistString(pair.getKey().getOffset())
+                    .equals(artist))
+                {
+                    songList.add(memManager.getArtistString(pair.getValue()
+                        .getOffset()));
+                }
             }
         }
+        else
+        {
+            System.out.println(
+                "You called the getAllSongsFromArtist method on a songTree! Don't do that!");
+        }
+
+        return (String[])songList.toArray();
+    }
+
+
+    public String[] getAllArtistsFromSong(String name)
+    {
+        ArrayList<String> songList = new ArrayList<String>();
+        Iterator<KVPair> iterator = this.iterator();
+
+        if (!isArtistTree)
+        {
+            while (iterator.hasNext())
+            {
+                KVPair pair = iterator.next();
+
+                // Song name matches what we are looking for
+                if (memManager.getArtistString(pair.getKey().getOffset())
+                    .equals(name))
+                {
+                    songList.add(memManager.getArtistString(pair.getValue()
+                        .getOffset()));
+                }
+            }
+        }
+        else
+        {
+            System.out.println(
+                "You called the getAllArtistFromSong method on an artistTree! Don't do that!");
+        }
+
+        return (String[])songList.toArray();
     }
 
 
@@ -521,7 +587,7 @@ public class KVPairTree extends BinarySearchTree<KVPair>
         /*
          * else { // If artist in the KVPair matches the artist we are trying to
          * list if (memManager.getSongString(((KVPair)treeRoot.getElement())
-         * .getKey().getOffset()).equals(name)) {  } }
+         * .getKey().getOffset()).equals(name)) { } }
          */
 
         // recursively traverse right tree:

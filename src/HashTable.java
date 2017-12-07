@@ -1,29 +1,34 @@
 import java.util.ArrayList;
 
 /**
- * This class includes the impmentation for the hashing data structure. 
+ * This class includes the impmentation for the hashing data structure.
  * 
  * @author Alexander James Bochel
  * @version 12.2.2017
- *
  */
-public class HashTable {
+public class HashTable
+{
 
-    private int initialSize;  
-    private int currentTableSize;
-    private int slotsOccupied;     
+    private int                initialSize;
+    private int                currentTableSize;
+    private int                slotsOccupied;
     private ArrayList<Integer> occupiedIndecies;
-    private Handle[] handlesArray;  
-    private Handle tombstone; 
-    private MemoryManager memManager;
-    private boolean isSongTable = false;
-    
+    private Handle[]           handlesArray;
+    private Handle             tombstone;
+    private MemoryManager      memManager;
+    private boolean            isSongTable = false;
+
+
     /**
-     * The hash constructor creates the Array for the table as well as sets
-     * the count for the size of the table. 
-     * @param size Initial Size of the hashtable. 
-     * @param manager Memory Manager from the main database class. 
-     * @param isSong Is the hastable a song or artist table?
+     * The hash constructor creates the Array for the table as well as sets the
+     * count for the size of the table.
+     * 
+     * @param size
+     *            Initial Size of the hashtable.
+     * @param manager
+     *            Memory Manager from the main database class.
+     * @param isSong
+     *            Is the hastable a song or artist table?
      */
     public HashTable(int size, MemoryManager manager, boolean isSong)
     {
@@ -33,54 +38,66 @@ public class HashTable {
         occupiedIndecies = new ArrayList<Integer>();
         handlesArray = new Handle[initialSize];
         currentTableSize = initialSize;
-        slotsOccupied = 0; 
+        slotsOccupied = 0;
         tombstone = new Handle(-1);
     }
-    
+
+
     /**
-     * This method gets the size of the table at any given time. 
-     * @return Table size. 
+     * This method gets the size of the table at any given time.
+     * 
+     * @return Table size.
      */
     public int getCurrentTableSize()
     {
         return currentTableSize;
     }
-    
+
+
     /**
-     * This method gets the actual array table. 
-     * @return Table. 
+     * This method gets the actual array table.
+     * 
+     * @return Table.
      */
     public Handle[] getTable()
     {
         return handlesArray;
     }
-    
+
+
     /**
-     * This method determines whether or not a given handle is a tombstone
-     * by checking to see if it's value is -1. 
-     * @return Whether or not handle is tombstone. 
+     * This method determines whether or not a given handle is a tombstone by
+     * checking to see if it's value is -1.
+     * 
+     * @return Whether or not handle is tombstone.
      */
     public boolean isTombstone(Handle handle)
     {
         return handle.getOffset() == -1;
     }
-    
+
+
     /**
-     * This method returns the handle for a given string name/artist. 
-     * @param string Name/Artist being looked for. 
-     * @return Handle that correspons with the given name/artist. 
+     * This method returns the handle for a given string name/artist.
+     * 
+     * @param string
+     *            Name/Artist being looked for.
+     * @return Handle that correspons with the given name/artist.
      */
     public Handle getEntry(String string)
-    { 
+    {
         int handleSlot = find(string);
         return handlesArray[handleSlot];
     }
-     
+
+
     /**
-     * This method checks to see whether or not the given string exists in the 
-     * table.  
-     * @param handleString The string for the handle being looked for. 
-     * @return The slot of the item, or -1 if the item is not found. 
+     * This method checks to see whether or not the given string exists in the
+     * table.
+     * 
+     * @param handleString
+     *            The string for the handle being looked for.
+     * @return The slot of the item, or -1 if the item is not found.
      */
     private int find(String handleString)
     {
@@ -88,8 +105,10 @@ public class HashTable {
         int homeSlot = hash(handleString, currentTableSize);
         int slotCount = homeSlot;
         int probeOffset = 1;
-        
-        while (handlesArray[slotCount] != null) // TODO: Might have to ensure that we do not reach the end of the array. 
+
+        while (handlesArray[slotCount] != null) // TODO: Might have to ensure
+                                                // that we do not reach the end
+                                                // of the array.
         {
             if (getOffsetString(handlesArray[slotCount]).equals(handleString))
             {
@@ -98,89 +117,97 @@ public class HashTable {
             }
             else
             {
-                slotCount = (int) (homeSlot + Math.pow(probeOffset, 2)); 
+                slotCount = (int)(homeSlot + Math.pow(probeOffset, 2));
                 probeOffset++;
             }
         }
         return strSlot;
     }
-    
+
+
     /**
      * This method inserts a new handle in the hashtable.
-     * @param string Name of artist or song title. 
-     * @param handle Offset of element being inserted into the table.  
-     * @return Index of element in table. 
+     * 
+     * @param string
+     *            Name of artist or song title.
+     * @param handle
+     *            Offset of element being inserted into the table.
+     * @return Index of element in table.
      */
     public int insert(Handle handle)
     {
-        // Handle string depends on type of table, song or artist. 
+        // Handle string depends on type of table, song or artist.
         String handleString = getOffsetString(handle);
-                
+
         int homeSlot = hash(handleString, currentTableSize);
         int slotCount = homeSlot;
         int probeOffset = 1;
-        
-        if (find(handleString) == -1) // If doesn't already exist.  
+
+        if (find(handleString) == -1) // If doesn't already exist.
         {
-            while (handlesArray[slotCount] != null &&
-                    !isTombstone(handlesArray[slotCount]))
+            while (handlesArray[slotCount] != null && !isTombstone(
+                handlesArray[slotCount]))
             {
-                slotCount = (int) (homeSlot + Math.pow(probeOffset, 2)); 
+                slotCount = (int)(homeSlot + Math.pow(probeOffset, 2));
                 probeOffset++;
             }
-            
+
             handlesArray[slotCount] = handle;
-            slotsOccupied++;         
+            slotsOccupied++;
             occupiedIndecies.add(slotCount);
-            
-            // If the table is over 50% full, call resizeTable. 
+
+            // If the table is over 50% full, call resizeTable.
             if (slotsOccupied > (currentTableSize / 2))
             {
                 expandTable();
             }
-        }        
+        }
         return slotCount;
     }
-    
+
+
     /**
-     * This method "removes" a specified element from the hashtable by 
-     * replacing it with a tombstone. 
-     * @param strToDelete The artist/song that will be deleted from the table. 
-     * @return The slot from which the item was deleted. 
+     * This method "removes" a specified element from the hashtable by replacing
+     * it with a tombstone.
+     * 
+     * @param strToDelete
+     *            The artist/song that will be deleted from the table.
+     * @return The slot from which the item was deleted.
      */
     public int delete(String strToDelete)
     {
         int homeSlot = hash(strToDelete, currentTableSize);
-        int slotCount = homeSlot; 
-        int probeOffset = 1; 
-        
-        // Probe until the correct string is found. 
+        int slotCount = homeSlot;
+        int probeOffset = 1;
+
+        // Probe until the correct string is found.
         while (!getOffsetString(handlesArray[slotCount]).equals(strToDelete))
         {
-            slotCount = (int) (homeSlot + Math.pow(probeOffset, 2)); 
+            slotCount = (int)(homeSlot + Math.pow(probeOffset, 2));
             probeOffset++;
         }
-        
+
         handlesArray[slotCount] = tombstone;
         slotsOccupied--;
         occupiedIndecies.remove(slotCount);
-        
+
         return slotCount;
     }
-    
+
+
     /**
      * This method resizes he table and rehashes all of the entries once the
-     * size is greater then 50% full. 
+     * size is greater then 50% full.
      */
     private void expandTable()
     {
-        // Initialize new array with twice the space. 
+        // Initialize new array with twice the space.
         Handle[] temp = handlesArray;
         currentTableSize = currentTableSize * 2;
         handlesArray = new Handle[currentTableSize];
         ArrayList<Integer> oldIndecies = occupiedIndecies;
         occupiedIndecies.clear();
-        // Get all occupied indecies and rehash them to the new table. 
+        // Get all occupied indecies and rehash them to the new table.
         for (int i = 0; i < oldIndecies.size(); i++)
         {
             Handle toInsert = temp[oldIndecies.get(i)];
@@ -188,15 +215,18 @@ public class HashTable {
             insert(toInsert);
         }
     }
-    
+
+
     /**
-     * Hash function for Project 4. 
-     * It uses the "sfold" method from the OpenDSA* module on hash functions.
-     * Computes hash of string s given a table with size m.
+     * Hash function for Project 4. It uses the "sfold" method from the OpenDSA*
+     * module on hash functions. Computes hash of string s given a table with
+     * size m.
      * 
-     * @param s String being hashed. 
-     * @param m Table size. 
-     * @return int Home slot in the table.  
+     * @param s
+     *            String being hashed.
+     * @param m
+     *            Table size.
+     * @return int Home slot in the table.
      */
     public int hash(String s, int m)
     {
@@ -222,17 +252,47 @@ public class HashTable {
         }
         return (int)(Math.abs(sum) % m);
     }
-    
+
+
     /**
      * This method returns either the artist or song string for a given offset
-     * based off of whether this table is acting as a song or artist table. 
-     * @param handle The handle containing the offset that we want to find. 
-     * @return String Song or artist name. 
+     * based off of whether this table is acting as a song or artist table.
+     * 
+     * @param handle
+     *            The handle containing the offset that we want to find.
+     * @return String Song or artist name.
      */
     private String getOffsetString(Handle handle)
     {
-        return isSongTable ? 
-                memManager.getSongString(handle.getOffset()) :
-                memManager.getArtistString(handle.getOffset());
+        return isSongTable
+            ? memManager.getSongString(handle.getOffset())
+            : memManager.getArtistString(handle.getOffset());
+    }
+
+
+    /**
+     * This method is used for the print artist/song maethod. It will print out
+     * the elements followed by the offset of that element
+     */
+    public void listElements()
+    {
+        if (!isSongTable)
+        {
+            for (Handle h : handlesArray)
+            {
+                System.out.print("|");
+                System.out.print(memManager.getArtistString(h.getOffset()));
+                System.out.print("| " + h.getOffset());
+            }
+        }
+        else
+        {
+            for (Handle h : handlesArray)
+            {
+                System.out.print("|");
+                System.out.print(memManager.getArtistString(h.getOffset()));
+                System.out.print("| " + h.getOffset());
+            }
+        }
     }
 }
