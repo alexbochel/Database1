@@ -60,7 +60,7 @@ public class HashTable
     {
         return slotsOccupied;
     }
-  
+    
     /**
      * This method gets the actual array table.
      * 
