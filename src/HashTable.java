@@ -117,7 +117,8 @@ public class HashTable
             }
             else
             {
-                slotCount = (int)(homeSlot + Math.pow(probeOffset, 2)) % this.currentTableSize;
+                slotCount = (int)(homeSlot + Math.pow(probeOffset, 2))
+                    % this.currentTableSize;
                 probeOffset++;
             }
         }
@@ -148,7 +149,8 @@ public class HashTable
             while (handlesArray[slotCount] != null && !isTombstone(
                 handlesArray[slotCount]))
             {
-                slotCount = (int)(homeSlot + Math.pow(probeOffset, 2)) % this.currentTableSize;
+                slotCount = (int)(homeSlot + Math.pow(probeOffset, 2))
+                    % this.currentTableSize;
                 probeOffset++;
             }
 
@@ -160,6 +162,33 @@ public class HashTable
             if (slotsOccupied > (currentTableSize / 2))
             {
                 expandTable();
+            }
+
+            if (!isSongTable)
+            {
+                System.out.println("|" + memManager.getArtistString(handle
+                    .getOffset()) + "| is added to the Artist database.");
+            }
+            else
+            {
+                System.out.println("|" + memManager.getSongString(handle
+                    .getOffset()) + "| is added to the  Song database.");
+            }
+        }
+        // duplicate
+        else
+        {
+            if (!isSongTable)
+            {
+                System.out.println("|" + memManager.getArtistString(handle
+                    .getOffset())
+                    + "| duplicates a record already in the Artist database.");
+            }
+            else
+            {
+                System.out.println("|" + memManager.getSongString(handle
+                    .getOffset())
+                    + "| duplicates a record already in the Song database.");
             }
         }
         return slotCount;
@@ -183,7 +212,8 @@ public class HashTable
         // Probe until the correct string is found.
         while (!getOffsetString(handlesArray[slotCount]).equals(strToDelete))
         {
-            slotCount = (int)(homeSlot + Math.pow(probeOffset, 2) % this.currentTableSize);
+            slotCount = (int)(homeSlot + Math.pow(probeOffset, 2)
+                % this.currentTableSize);
             probeOffset++;
         }
 
