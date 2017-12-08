@@ -14,8 +14,11 @@ public class Database
     private MemoryManager memManager;
     private HashTable     songTable;
     private HashTable     artistTable;
+<<<<<<< HEAD
     private KVPairTree    artistTree;
     private KVPairTree    songTree;
+=======
+>>>>>>> fa1f355d55756663b0ad9c515f23584c9345b141
     private Scanner       scanner;
 
 
@@ -28,11 +31,14 @@ public class Database
         songTable = new HashTable(size, memManager, true);
         artistTable = new HashTable(size, memManager, false);
 
+<<<<<<< HEAD
         // 3. Initialize two KVPairTrees
         artistTree = new KVPairTree(memManager, true);
         songTree = new KVPairTree(memManager, false);
 
         // 4. Call parse method
+=======
+>>>>>>> fa1f355d55756663b0ad9c515f23584c9345b141
         this.parseData(name);
     }
 
@@ -73,6 +79,7 @@ public class Database
             // insert
             if (command.equals("insert"))
             {
+<<<<<<< HEAD
                 // Getting the strings for the artist and name of the song
                 String song = scanner.nextLine();
                 String artist = song.split("<SEP>")[0];
@@ -98,11 +105,21 @@ public class Database
                 artistTree.insert(pairArtist);
                 songTree.insert(pairName);
 
+=======
+                String song = scanner.nextLine();
+                String artist = song.split("<SEP>")[0];
+                String name = song.split("<SEP>")[1];
+                
+                memManager.insertArtist(artist);
+                memManager.insertName(name);
+                
+>>>>>>> fa1f355d55756663b0ad9c515f23584c9345b141
             }
 
             // delete
             else if (command.equals("delete"))
             {
+<<<<<<< HEAD
                 // Getting the strings for the artist and name of the song
                 String song = scanner.nextLine();
                 String artist = song.split("<SEP>")[0];
@@ -216,8 +233,43 @@ public class Database
                     songTree.listSong(name);
                 }
             }
+=======
+
+            }
+            
+            // remove
+            else if (command.equals("remove"))
+            {
+                
+            }
+            
+            // print artist / song and print tree
+            else if (command.equals("print"))
+            {
+                
+            }
+            
+            // list
+            else if (command.equals("list"))
+            {
+                
+            }
+
+>>>>>>> fa1f355d55756663b0ad9c515f23584c9345b141
         }
 
         scanner.close();
     }
+<<<<<<< HEAD
+=======
+
+
+    /**
+     * This method calls the specific command for
+     */
+    private void callCommand(String command)
+    {
+
+    }
+>>>>>>> fa1f355d55756663b0ad9c515f23584c9345b141
 }
