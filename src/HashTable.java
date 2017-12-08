@@ -110,7 +110,7 @@ public class HashTable
                                                 // that we do not reach the end
                                                 // of the array.
         {
-            if (getOffsetString(handlesArray[slotCount]).equals(handleString))
+            if (memManager.getItemString(handlesArray[slotCount].getOffset()).equals(handleString))
             {
                 strSlot = slotCount;
                 break;
@@ -138,7 +138,7 @@ public class HashTable
     public int insert(Handle handle)
     {
         // Handle string depends on type of table, song or artist.
-        String handleString = getOffsetString(handle);
+        String handleString = memManager.getItemString(handle.getOffset());
 
         int homeSlot = hash(handleString, currentTableSize);
         int slotCount = homeSlot;
@@ -166,12 +166,12 @@ public class HashTable
 
             if (!isSongTable)
             {
-                System.out.println("|" + memManager.getArtistString(handle
+                System.out.println("|" + memManager.getItemString(handle
                     .getOffset()) + "| is added to the Artist database.");
             }
             else
             {
-                System.out.println("|" + memManager.getSongString(handle
+                System.out.println("|" + memManager.getItemString(handle
                     .getOffset()) + "| is added to the  Song database.");
             }
         }
@@ -180,13 +180,13 @@ public class HashTable
         {
             if (!isSongTable)
             {
-                System.out.println("|" + memManager.getArtistString(handle
+                System.out.println("|" + memManager.getItemString(handle
                     .getOffset())
                     + "| duplicates a record already in the Artist database.");
             }
             else
             {
-                System.out.println("|" + memManager.getSongString(handle
+                System.out.println("|" + memManager.getItemString(handle
                     .getOffset())
                     + "| duplicates a record already in the Song database.");
             }
@@ -210,7 +210,8 @@ public class HashTable
         int probeOffset = 1;
 
         // Probe until the correct string is found.
-        while (!getOffsetString(handlesArray[slotCount]).equals(strToDelete))
+        while (!memManager.getItemString(handlesArray[slotCount].getOffset())
+                .equals(strToDelete))
         {
             slotCount = (int)(homeSlot + Math.pow(probeOffset, 2)
                 % this.currentTableSize);
@@ -283,23 +284,6 @@ public class HashTable
         return (int)(Math.abs(sum) % m);
     }
 
-
-    /**
-     * This method returns either the artist or song string for a given offset
-     * based off of whether this table is acting as a song or artist table.
-     * 
-     * @param handle
-     *            The handle containing the offset that we want to find.
-     * @return String Song or artist name.
-     */
-    private String getOffsetString(Handle handle)
-    {
-        return isSongTable
-            ? memManager.getSongString(handle.getOffset())
-            : memManager.getArtistString(handle.getOffset());
-    }
-
-
     /**
      * This method is used for the print artist/song maethod. It will print out
      * the elements followed by the offset of that element
@@ -313,7 +297,7 @@ public class HashTable
                 if (h != null)
                 {
                     System.out.print("|");
-                    System.out.print(memManager.getArtistString(h.getOffset()));
+                    System.out.print(memManager.getItemString(h.getOffset()));
                     System.out.println("| " + h.getOffset());
                 }
             }
@@ -327,7 +311,7 @@ public class HashTable
                 if (h != null)
                 {
                     System.out.print("|");
-                    System.out.print(memManager.getArtistString(h.getOffset()));
+                    System.out.print(memManager.getItemString(h.getOffset()));
                     System.out.println("| " + h.getOffset());
                 }
             }

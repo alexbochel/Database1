@@ -24,18 +24,18 @@ public class HashTableTest extends student.TestCase {
         int initialSize = 100;
         
         memManager = new MemoryManager(initialSize);
-        handle = new Handle(memManager.getArtistSize());
-        memManager.insertArtist("The Beatles");
-        handle2 = new Handle(memManager.getArtistSize());
-        memManager.insertArtist("EDEN"); 
-        handle3 = new Handle(memManager.getArtistSize());
-        memManager.insertArtist("Sum 41");
-        handle4 = new Handle(memManager.getArtistSize());
-        memManager.insertArtist("Radical Face");
-        handle5 = new Handle(memManager.getArtistSize());
-        memManager.insertArtist("Owl City");
-        handle6 = new Handle(memManager.getArtistSize());
-        memManager.insertArtist("Soulstice");
+        handle = new Handle(memManager.getDatabaseSize());
+        memManager.insertItem("The Beatles");
+        handle2 = new Handle(memManager.getDatabaseSize());
+        memManager.insertItem("EDEN"); 
+        handle3 = new Handle(memManager.getDatabaseSize());
+        memManager.insertItem("Sum 41");
+        handle4 = new Handle(memManager.getDatabaseSize());
+        memManager.insertItem("Radical Face");
+        handle5 = new Handle(memManager.getDatabaseSize());
+        memManager.insertItem("Owl City");
+        handle6 = new Handle(memManager.getDatabaseSize());
+        memManager.insertItem("Soulstice");
         
         artistTable = new HashTable(10, memManager, false);
         artistTable.insert(handle);
