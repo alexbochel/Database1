@@ -52,6 +52,14 @@ public class HashTable
         return currentTableSize;
     }
 
+    /**
+     * This method gets the number of occupied slots in the HashTable. 
+     * @return int Number of occupied slots. 
+     */
+    public int getSlotsOccupied()
+    {
+        return slotsOccupied;
+    }
 
     /**
      * This method gets the actual array table.
@@ -104,13 +112,13 @@ public class HashTable
         int homeSlot = hash(handleString, currentTableSize);
         int slotCount = homeSlot;
         int probeOffset = 1;
-
+  
         while (handlesArray[slotCount] != null) // TODO: Might have to ensure
-                                                // that we do not reach the end
-                                                // of the array.
+            // that we do not reach the end
+            // of the array.
         {
             if (memManager.getItemString(handlesArray[slotCount].getOffset())
-                .equals(handleString))
+                    .equals(handleString))
             {
                 strSlot = slotCount;
                 break;
@@ -118,7 +126,7 @@ public class HashTable
             else
             {
                 slotCount = (int)(homeSlot + Math.pow(probeOffset, 2))
-                    % this.currentTableSize;
+                        % this.currentTableSize;
                 probeOffset++;
             }
         }
@@ -147,10 +155,10 @@ public class HashTable
         if (find(handleString) == -1) // If doesn't already exist.
         {
             while (handlesArray[slotCount] != null && !isTombstone(
-                handlesArray[slotCount]))
+                    handlesArray[slotCount]))
             {
                 slotCount = (int)(homeSlot + Math.pow(probeOffset, 2))
-                    % this.currentTableSize;
+                        % this.currentTableSize;
                 probeOffset++;
             }
 
@@ -167,12 +175,12 @@ public class HashTable
             if (!isSongTable)
             {
                 System.out.println("|" + memManager.getItemString(handle
-                    .getOffset()) + "| is added to the Artist database.");
+                        .getOffset()) + "| is added to the Artist database.");
             }
             else
             {
                 System.out.println("|" + memManager.getItemString(handle
-                    .getOffset()) + "| is added to the  Song database.");
+                        .getOffset()) + "| is added to the  Song database.");
             }
             return slotCount;
         }
@@ -182,14 +190,14 @@ public class HashTable
             if (!isSongTable)
             {
                 System.out.println("|" + memManager.getItemString(handle
-                    .getOffset())
-                    + "| duplicates a record already in the Artist database.");
+                        .getOffset())
+                + "| duplicates a record already in the Artist database.");
             }
             else
             {
                 System.out.println("|" + memManager.getItemString(handle
-                    .getOffset())
-                    + "| duplicates a record already in the Song database.");
+                        .getOffset())
+                + "| duplicates a record already in the Song database.");
             }
             return -1;
         }
@@ -208,27 +216,34 @@ public class HashTable
         int homeSlot = hash(strToDelete, currentTableSize);
         int slotCount = homeSlot;
         int probeOffset = 1;
-
-        // Probe until the correct string is found.
-        while (!memManager.getItemString(handlesArray[slotCount].getOffset())
-            .equals(strToDelete))
+        if (find(strToDelete) != -1)
         {
-            slotCount = (int)(homeSlot + Math.pow(probeOffset, 2)
-                % this.currentTableSize);
-            probeOffset++;
-        }
-
-        handlesArray[slotCount] = tombstone;
-        slotsOccupied--;
-
-        for (int i = 0; i < occupiedIndecies.size(); i++)
-        {
-            if (occupiedIndecies.get(i) == slotCount)
+            // Probe until the correct string is found.
+            while (!memManager.getItemString(handlesArray[slotCount].getOffset())
+                    .equals(strToDelete))
             {
-                occupiedIndecies.remove(i);
+                slotCount = (int)(homeSlot + Math.pow(probeOffset, 2)
+                % this.currentTableSize);
+                probeOffset++;
             }
+
+            handlesArray[slotCount] = tombstone;
+            slotsOccupied--;
+
+            for (int i = 0; i < occupiedIndecies.size(); i++)
+            {
+                if (occupiedIndecies.get(i) == slotCount)
+                {
+                    occupiedIndecies.remove(i);
+                }
+            }
+            
+            return slotCount;
         }
-        return slotCount;
+        else
+        {
+            return -1;
+        }
     }
 
 
@@ -242,7 +257,13 @@ public class HashTable
         Handle[] temp = handlesArray;
         currentTableSize = currentTableSize * 2;
         handlesArray = new Handle[currentTableSize];
-        ArrayList<Integer> oldIndecies = occupiedIndecies;
+        ArrayList<Integer> oldIndecies = new ArrayList<Integer>();
+
+        for (int i = 0; i < occupiedIndecies.size(); i++)
+        {
+            oldIndecies.add(occupiedIndecies.get(i));
+        }  
+
         occupiedIndecies.clear();
         // Get all occupied indecies and rehash them to the new table.
         for (int i = 0; i < oldIndecies.size(); i++)
@@ -306,10 +327,9 @@ public class HashTable
                     System.out.print("|");
                     System.out.print(memManager.getItemString(h.getOffset()));
                     System.out.println("| " + this.find(memManager
-                        .getItemString(h.getOffset())));
+                            .getItemString(h.getOffset())));
                 }
-            }
-
+            }  
             System.out.println("total artists: " + slotsOccupied);
         }
         else
@@ -321,7 +341,7 @@ public class HashTable
                     System.out.print("|");
                     System.out.print(memManager.getItemString(h.getOffset()));
                     System.out.println("| " + this.find(memManager
-                        .getItemString(h.getOffset())));
+                            .getItemString(h.getOffset())));
                 }
             }
 
