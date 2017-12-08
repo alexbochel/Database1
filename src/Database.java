@@ -163,7 +163,6 @@ public class Database
                 {
                     System.out.println("|" + artist
                         + "| does not exist in the artist database.");
-
                     // ALSO does not contain name
                     if (!songTable.containsElement(name))
                     {
