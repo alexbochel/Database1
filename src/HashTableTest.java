@@ -15,6 +15,7 @@ public class HashTableTest extends student.TestCase {
     private Handle handle4;
     private Handle handle5;
     private Handle handle6;
+    private Handle handle7;
     
     /**
      * This method sets up the testing environment for the test class. 
@@ -36,6 +37,8 @@ public class HashTableTest extends student.TestCase {
         memManager.insertItem("Owl City");
         handle6 = new Handle(memManager.getDatabaseSize());
         memManager.insertItem("Soulstice");
+        handle7 = new Handle(memManager.getDatabaseSize());
+        memManager.insertItem("The Bums");
         
         artistTable = new HashTable(10, memManager, false);
         artistTable.insert(handle);
@@ -79,6 +82,67 @@ public class HashTableTest extends student.TestCase {
     }
     
     /**
+     * This tests the case of inserting a duplicate element into the table. 
+     */
+    public void testInsertDuplicate()
+    {
+        assertEquals(-1, artistTable.insert(handle));
+        assertEquals(-1, artistTable.insert(handle2));
+        assertEquals(-1, artistTable.insert(handle3));
+    }
+    
+    /**
+     * This tests the outcome of adding many elements to the string
+     * without checking for correct placement. It only ensures that the table
+     * does not crash or throw an exception. 
+     */
+    public void testInsertMany()
+    {
+        handle = new Handle(memManager.getDatabaseSize());
+        memManager.insertItem("Taylor Swift");
+        handle2 = new Handle(memManager.getDatabaseSize());
+        memManager.insertItem("Ariana Grande"); 
+        handle3 = new Handle(memManager.getDatabaseSize());
+        memManager.insertItem("Spose");
+        handle4 = new Handle(memManager.getDatabaseSize());
+        memManager.insertItem("Big Time Rush");
+        handle5 = new Handle(memManager.getDatabaseSize());
+        memManager.insertItem("Aly and AJ");
+        handle6 = new Handle(memManager.getDatabaseSize());
+        memManager.insertItem("Soulstice");
+        handle7 = new Handle(memManager.getDatabaseSize());
+        memManager.insertItem("The Bums");
+        Handle handle8 = new Handle(memManager.getDatabaseSize());
+        memManager.insertItem("Eminem");
+        Handle handle9 = new Handle(memManager.getDatabaseSize());
+        memManager.insertItem("Camp Rock"); 
+        Handle handle10 = new Handle(memManager.getDatabaseSize());
+        memManager.insertItem("Rihanna");
+        Handle handle11 = new Handle(memManager.getDatabaseSize());
+        memManager.insertItem("Queen");
+        Handle handle12 = new Handle(memManager.getDatabaseSize());
+        memManager.insertItem("The Animals");
+        Handle handle13 = new Handle(memManager.getDatabaseSize());
+        memManager.insertItem("ZZ Top");
+        Handle handle14 = new Handle(memManager.getDatabaseSize());
+        memManager.insertItem("Ben Crosby");  
+        artistTable.insert(handle);
+        artistTable.insert(handle2);
+        artistTable.insert(handle3);
+        artistTable.insert(handle4);
+        artistTable.insert(handle5);
+        artistTable.insert(handle6);
+        artistTable.insert(handle7);   
+        artistTable.insert(handle8);
+        artistTable.insert(handle9);
+        artistTable.insert(handle10);
+        artistTable.insert(handle11);
+        artistTable.insert(handle12);
+        artistTable.insert(handle13);
+        artistTable.insert(handle14);
+    }
+    
+    /**
      * This tests the insert function for the hash table when probing is
      * necessary.
      */
@@ -87,6 +151,9 @@ public class HashTableTest extends student.TestCase {
         artistTable.insert(handle4);
         assertEquals(handle4.getOffset(), 
                 artistTable.getTable()[8].getOffset());
+        artistTable.insert(handle7);
+        assertEquals(handle7.getOffset(), 
+                artistTable.getTable()[2].getOffset());
     }
     
     /**
@@ -94,9 +161,14 @@ public class HashTableTest extends student.TestCase {
      */
     public void testGetEntry()
     {
-        
+        assertEquals(handle.getOffset(), artistTable.getEntry("The Beatles")
+                .getOffset());
+        assertEquals(handle2.getOffset(), artistTable.getEntry("EDEN")
+                .getOffset());
+        assertEquals(handle3.getOffset(), artistTable.getEntry("Sum 41")
+                .getOffset());
     }
-    
+      
     /**
      * This tests the delete method in the HashTable. 
      */
@@ -113,5 +185,6 @@ public class HashTableTest extends student.TestCase {
         artistTable.insert(handle4);
         artistTable.insert(handle5);
         artistTable.insert(handle6);
+        assertEquals(20, artistTable.getCurrentTableSize());
     }
 }

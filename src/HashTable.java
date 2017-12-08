@@ -8,7 +8,6 @@ import java.util.ArrayList;
  */
 public class HashTable
 {
-
     private int                initialSize;
     private int                currentTableSize;
     private int                slotsOccupied;
@@ -112,7 +111,7 @@ public class HashTable
         {
             if (memManager.getItemString(handlesArray[slotCount].getOffset()).equals(handleString))
             {
-                strSlot = slotCount;
+                strSlot = slotCount;  
                 break;
             }
             else
@@ -157,7 +156,7 @@ public class HashTable
             handlesArray[slotCount] = handle;
             slotsOccupied++;
             occupiedIndecies.add(slotCount);
-
+           
             // If the table is over 50% full, call resizeTable.
             if (slotsOccupied > (currentTableSize / 2))
             {
@@ -174,6 +173,7 @@ public class HashTable
                 System.out.println("|" + memManager.getItemString(handle
                     .getOffset()) + "| is added to the  Song database.");
             }
+            return slotCount;
         }
         // duplicate
         else
@@ -190,8 +190,8 @@ public class HashTable
                     .getOffset())
                     + "| duplicates a record already in the Song database.");
             }
+            return -1;
         }
-        return slotCount;
     }
 
 
@@ -220,8 +220,14 @@ public class HashTable
 
         handlesArray[slotCount] = tombstone;
         slotsOccupied--;
-        occupiedIndecies.remove(slotCount);
 
+        for (int i = 0; i < occupiedIndecies.size(); i++)
+        {   
+            if (occupiedIndecies.get(i) == slotCount)
+            {
+                occupiedIndecies.remove(i);
+            }
+        }
         return slotCount;
     }
 

@@ -43,10 +43,10 @@ public class MemoryManager
      * 
      * @param name
      *            is the name of the song/artist to insert
-     */
+     */  
     public void insertItem(String name)
     {
-        if (size + name.getBytes().length > capacity)
+        if (size + name.getBytes().length + 3 > capacity)
         {
             this.expandDataArray();
             capacity = dataItems.length;
