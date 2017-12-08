@@ -25,6 +25,7 @@ public class HashTableTest extends student.TestCase {
         int initialSize = 100;
         
         memManager = new MemoryManager(initialSize);
+
         handle = new Handle(memManager.getDatabaseSize());
         memManager.insertItem("The Beatles");
         handle2 = new Handle(memManager.getDatabaseSize());
@@ -42,7 +43,7 @@ public class HashTableTest extends student.TestCase {
         
         artistTable = new HashTable(10, memManager, false);
         artistTable.insert(handle);
-        artistTable.insert(handle2);
+        artistTable.insert(handle2);  
         artistTable.insert(handle3);
     }
     
@@ -92,11 +93,12 @@ public class HashTableTest extends student.TestCase {
     }
     
     /**
-     * This tests the outcome of adding many elements to the string
+     * This tests the outcome of adding many elements to the table
      * without checking for correct placement. It only ensures that the table
-     * does not crash or throw an exception. 
+     * does not crash or throw an exception. It also tests removing these 
+     * elements in a similar fashion. 
      */
-    public void testInsertMany()
+    public void testInsertDeleteMany()
     {
         handle = new Handle(memManager.getDatabaseSize());
         memManager.insertItem("Taylor Swift");
@@ -127,7 +129,7 @@ public class HashTableTest extends student.TestCase {
         Handle handle14 = new Handle(memManager.getDatabaseSize());
         memManager.insertItem("Ben Crosby");  
         artistTable.insert(handle);
-        artistTable.insert(handle2);
+        artistTable.insert(handle2);  
         artistTable.insert(handle3);
         artistTable.insert(handle4);
         artistTable.insert(handle5);
@@ -140,8 +142,62 @@ public class HashTableTest extends student.TestCase {
         artistTable.insert(handle12);
         artistTable.insert(handle13);
         artistTable.insert(handle14);
+        
+        assertEquals(17, artistTable.getSlotsOccupied());
+        
+        artistTable.delete("The Beatles");
+        assertEquals(16, artistTable.getSlotsOccupied());
+        artistTable.delete("Sum 41");
+        assertEquals(15, artistTable.getSlotsOccupied());
+        artistTable.delete("EDEN");
+        assertEquals(14, artistTable.getSlotsOccupied());
+        artistTable.delete("Taylor Swift");
+        assertEquals(13, artistTable.getSlotsOccupied());
+        artistTable.delete("Ariana Grande");
+        assertEquals(12, artistTable.getSlotsOccupied());
+        artistTable.delete("Big Time Rush");
+        assertEquals(11, artistTable.getSlotsOccupied());
+        artistTable.delete("Aly and AJ");
+        assertEquals(10, artistTable.getSlotsOccupied());
+        artistTable.delete("Soulstice");
+        assertEquals(9, artistTable.getSlotsOccupied());
+        artistTable.delete("The Bums");
+        assertEquals(8, artistTable.getSlotsOccupied());
+        artistTable.delete("Eminem");
+        assertEquals(7, artistTable.getSlotsOccupied());
+        artistTable.delete("Camp Rock");
+        assertEquals(6, artistTable.getSlotsOccupied());
+        artistTable.delete("Rihanna");
+        assertEquals(5, artistTable.getSlotsOccupied());
+        artistTable.delete("Queen");
+        assertEquals(4, artistTable.getSlotsOccupied());
+        artistTable.delete("The Animals");
+        assertEquals(3, artistTable.getSlotsOccupied());
+        artistTable.delete("ZZ Top");
+        assertEquals(2, artistTable.getSlotsOccupied());
+        artistTable.delete("Ben Crosby");
+        assertEquals(1, artistTable.getSlotsOccupied());
+        artistTable.delete("Spose");
+        assertEquals(0, artistTable.getSlotsOccupied());
+        
+        artistTable.insert(handle);
+        artistTable.insert(handle2);  
+        artistTable.insert(handle3);
+        artistTable.insert(handle4);
+        artistTable.insert(handle5);
+        artistTable.insert(handle6);
+        artistTable.insert(handle7);   
+        artistTable.insert(handle8);
+        artistTable.insert(handle9);
+        artistTable.insert(handle10);
+        artistTable.insert(handle11);
+        artistTable.insert(handle12);
+        artistTable.insert(handle13);
+        artistTable.insert(handle14);
+        
+        assertEquals(14, artistTable.getSlotsOccupied());
     }
-    
+      
     /**
      * This tests the insert function for the hash table when probing is
      * necessary.
@@ -174,7 +230,14 @@ public class HashTableTest extends student.TestCase {
      */
     public void testDelete()
     {
-        
+        assertEquals(3, artistTable.getSlotsOccupied());
+        artistTable.delete("The Beatles");
+        assertEquals(2, artistTable.getSlotsOccupied());
+        artistTable.delete("Sum 41");
+        assertEquals(1, artistTable.getSlotsOccupied());
+        artistTable.delete("EDEN");
+        assertEquals(0, artistTable.getSlotsOccupied());
+        assertEquals(-1, artistTable.delete("Goodbye Moonman"));
     }
     
     /**
