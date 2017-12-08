@@ -166,15 +166,18 @@ public class MemoryManager
      */
     public String getSongString(int offset)
     {
-        byte[] songByteLength = new byte[2];
-        songByteLength[0] = songNames[offset + OFFSET_LENGTH_ONE];
-        songByteLength[1] = songNames[offset + OFFSET_LENGTH_TWO];
+        byte[] songByteLength = new byte[4];
+        songByteLength[0] = 0;
+        songByteLength[1] = 0;
+        songByteLength[2] = songNames[offset + OFFSET_LENGTH_ONE];
+        songByteLength[3] = songNames[offset + OFFSET_LENGTH_TWO];
         int length = bytesToInt(songByteLength);
 
         byte[] songStringBytes = new byte[length];
         System.arraycopy(songNames, offset + OFFSET_STRING_BEGIN,
             songStringBytes, 0, length);
         String songTitle = "";
+        
         try
         {
             songTitle = new String(songStringBytes, "ISO-8859-1");
