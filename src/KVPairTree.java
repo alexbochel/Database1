@@ -47,19 +47,19 @@ public class KVPairTree extends BinarySearchTree<KVPair>
 
                 if (isArtistTree)
                 {
-                    System.out.print(memManager.getArtistString(pair.getKey()
+                    System.out.print(memManager.getItemString(pair.getKey()
                         .getOffset()));
                     System.out.print("|,|");
-                    System.out.print(memManager.getSongString(pair.getValue()
+                    System.out.print(memManager.getItemString(pair.getValue()
                         .getOffset()));
                     System.out.print("|),");
                 }
                 else
                 {
-                    System.out.print(memManager.getSongString(pair.getKey()
+                    System.out.print(memManager.getItemString(pair.getKey()
                         .getOffset()));
                     System.out.print("|,|");
-                    System.out.print(memManager.getArtistString(pair.getValue()
+                    System.out.print(memManager.getItemString(pair.getValue()
                         .getOffset()));
                     System.out.print("|),");
 
@@ -78,21 +78,21 @@ public class KVPairTree extends BinarySearchTree<KVPair>
 
         if (isArtistTree)
         {
-            System.out.print(memManager.getArtistString(pair.getKey()
+            System.out.print(memManager.getItemString(pair.getKey()
                 .getOffset()));
             System.out.print("|,|");
-            System.out.print(memManager.getSongString(pair.getValue()
+            System.out.print(memManager.getItemString(pair.getValue()
                 .getOffset()));
-            System.out.print("|), (");
+            System.out.print("|),(");
         }
         else
         {
-            System.out.print(memManager.getSongString(pair.getKey()
+            System.out.print(memManager.getItemString(pair.getKey()
                 .getOffset()));
             System.out.print("|,|");
-            System.out.print(memManager.getArtistString(pair.getValue()
+            System.out.print(memManager.getItemString(pair.getValue()
                 .getOffset()));
-            System.out.print("|), (");
+            System.out.print("|),(");
         }
 
         System.out.print(pair.getKey().getOffset() + "," + pair.getValue()
@@ -119,7 +119,7 @@ public class KVPairTree extends BinarySearchTree<KVPair>
                 KVPair pair = iterator.next();
 
                 // Artist matches what we are looking for
-                if (memManager.getArtistString(pair.getKey().getOffset())
+                if (memManager.getItemString(pair.getKey().getOffset())
                     .equals(artist))
                 {
                     found = true;
@@ -127,17 +127,17 @@ public class KVPairTree extends BinarySearchTree<KVPair>
                     // print it to the console
                     System.out.print("The KVPair (|");
 
-                    System.out.print(memManager.getArtistString(pair.getKey()
+                    System.out.print(memManager.getItemString(pair.getKey()
                         .getOffset()));
                     System.out.print("|,|");
-                    System.out.print(memManager.getSongString(pair.getValue()
+                    System.out.print(memManager.getItemString(pair.getValue()
                         .getOffset()));
                     System.out.print("|),");
 
                     System.out.print(pair.getKey().getOffset() + "," + pair
                         .getValue().getOffset());
 
-                    System.out.print(" is deleted from the tree.");
+                    System.out.println(" is deleted from the tree.");
                     
                     super.delete(pair);
                 }
@@ -151,7 +151,7 @@ public class KVPairTree extends BinarySearchTree<KVPair>
                 KVPair pair = iterator.next();
 
                 // Artist matches what we are looking for
-                if (memManager.getArtistString(pair.getValue().getOffset())
+                if (memManager.getItemString(pair.getValue().getOffset())
                     .equals(artist))
                 {
                     found = true;
@@ -159,17 +159,17 @@ public class KVPairTree extends BinarySearchTree<KVPair>
                     // print it out
                     System.out.print("The KVPair (|");
 
-                    System.out.print(memManager.getSongString(pair.getKey()
+                    System.out.print(memManager.getItemString(pair.getKey()
                         .getOffset()));
                     System.out.print("|,|");
-                    System.out.print(memManager.getArtistString(pair.getValue()
+                    System.out.print(memManager.getItemString(pair.getValue()
                         .getOffset()));
                     System.out.print("|),");
 
                     System.out.print(pair.getKey().getOffset() + "," + pair
                         .getValue().getOffset());
 
-                    System.out.print(" is deleted from the tree.");
+                    System.out.println(" is deleted from the tree.");
                     
                     super.delete(pair);
                 }
@@ -202,7 +202,7 @@ public class KVPairTree extends BinarySearchTree<KVPair>
                 KVPair pair = iterator.next();
 
                 // Song matches what we are looking for
-                if (memManager.getArtistString(pair.getValue().getOffset())
+                if (memManager.getItemString(pair.getValue().getOffset())
                     .equals(name))
                 {
                     found = true;
@@ -210,17 +210,17 @@ public class KVPairTree extends BinarySearchTree<KVPair>
                     // print to the console
                     System.out.print("The KVPair (|");
 
-                    System.out.print(memManager.getArtistString(pair.getKey()
+                    System.out.print(memManager.getItemString(pair.getKey()
                         .getOffset()));
                     System.out.print("|,|");
-                    System.out.print(memManager.getSongString(pair.getValue()
+                    System.out.print(memManager.getItemString(pair.getValue()
                         .getOffset()));
                     System.out.print("|),");
 
                     System.out.print(pair.getKey().getOffset() + "," + pair
                         .getValue().getOffset());
 
-                    System.out.print(" is deleted from the tree.");
+                    System.out.println(" is deleted from the tree.");
                     
                     super.delete(pair);
                 }
@@ -233,24 +233,24 @@ public class KVPairTree extends BinarySearchTree<KVPair>
                 KVPair pair = iterator.next();
 
                 // Song matches what we are looking for
-                if (memManager.getArtistString(pair.getKey().getOffset())
+                if (memManager.getItemString(pair.getKey().getOffset())
                     .equals(name))
                 {
                     found = true;
 
                     System.out.print("The KVPair (|");
 
-                    System.out.print(memManager.getSongString(pair.getKey()
+                    System.out.print(memManager.getItemString(pair.getKey()
                         .getOffset()));
                     System.out.print("|,|");
-                    System.out.print(memManager.getArtistString(pair.getValue()
+                    System.out.print(memManager.getItemString(pair.getValue()
                         .getOffset()));
                     System.out.print("|),");
 
                     System.out.print(pair.getKey().getOffset() + "," + pair
                         .getValue().getOffset());
 
-                    System.out.print(" is deleted from the tree.");
+                    System.out.println(" is deleted from the tree.");
                     
                     super.delete(pair);
                 }
@@ -280,10 +280,10 @@ public class KVPairTree extends BinarySearchTree<KVPair>
                 KVPair pair = iterator.next();
 
                 // Artist matches what we are looking for
-                if (memManager.getArtistString(pair.getKey().getOffset())
+                if (memManager.getItemString(pair.getKey().getOffset())
                     .equals(artist))
                 {
-                    songList.add(memManager.getArtistString(pair.getValue()
+                    songList.add(memManager.getItemString(pair.getValue()
                         .getOffset()));
                 }
             }
@@ -293,8 +293,15 @@ public class KVPairTree extends BinarySearchTree<KVPair>
             System.out.println(
                 "You called the getAllSongsFromArtist method on a songTree! Don't do that!");
         }
-
-        return (String[])songList.toArray();
+        
+        String[] strings = new String[songList.toArray().length];
+        
+        for (int i = 0; i < strings.length; i++)
+        {
+            strings[i] = songList.get(i);
+        }
+        
+        return strings;
     }
 
 
@@ -310,10 +317,10 @@ public class KVPairTree extends BinarySearchTree<KVPair>
                 KVPair pair = iterator.next();
 
                 // Song name matches what we are looking for
-                if (memManager.getArtistString(pair.getKey().getOffset())
+                if (memManager.getItemString(pair.getKey().getOffset())
                     .equals(name))
                 {
-                    songList.add(memManager.getArtistString(pair.getValue()
+                    songList.add(memManager.getItemString(pair.getValue()
                         .getOffset()));
                 }
             }
@@ -379,13 +386,13 @@ public class KVPairTree extends BinarySearchTree<KVPair>
                 KVPair pair = iterator.next();
 
                 // if artists are the same
-                if (memManager.getArtistString(pair.getKey().getOffset())
+                if (memManager.getItemString(pair.getKey().getOffset())
                     .equals(artist))
                 {
                     foundArtist = true;
 
                     // if song name also matches
-                    if (memManager.getSongString(pair.getValue().getOffset())
+                    if (memManager.getItemString(pair.getValue().getOffset())
                         .equals(name))
                     {
                         foundSong = true;
@@ -393,17 +400,14 @@ public class KVPairTree extends BinarySearchTree<KVPair>
                         // print to the console
                         System.out.print("The KVPair (|");
 
-                        System.out.print(memManager.getArtistString(pair
+                        System.out.print(memManager.getItemString(pair
                             .getKey().getOffset()));
                         System.out.print("|,|");
-                        System.out.print(memManager.getSongString(pair
+                        System.out.print(memManager.getItemString(pair
                             .getValue().getOffset()));
-                        System.out.print("|),");
+                        System.out.print("|)");
 
-                        System.out.print(pair.getKey().getOffset() + "," + pair
-                            .getValue().getOffset());
-
-                        System.out.print(" is deleted from the tree.");
+                        System.out.println(" is deleted from the tree.");
                         super.delete(pair);
 
                         super.delete(pair);
@@ -419,13 +423,13 @@ public class KVPairTree extends BinarySearchTree<KVPair>
                 KVPair pair = iterator.next();
 
                 // if artists are the same
-                if (memManager.getArtistString(pair.getValue().getOffset())
+                if (memManager.getItemString(pair.getValue().getOffset())
                     .equals(artist))
                 {
                     foundArtist = true;
 
                     // if song name also matches
-                    if (memManager.getSongString(pair.getKey().getOffset())
+                    if (memManager.getItemString(pair.getKey().getOffset())
                         .equals(name))
                     {
                         foundSong = true;
@@ -433,17 +437,14 @@ public class KVPairTree extends BinarySearchTree<KVPair>
                         // print to the console
                         System.out.print("The KVPair (|");
 
-                        System.out.print(memManager.getArtistString(pair
+                        System.out.print(memManager.getItemString(pair
                             .getKey().getOffset()));
                         System.out.print("|,|");
-                        System.out.print(memManager.getSongString(pair
+                        System.out.print(memManager.getItemString(pair
                             .getValue().getOffset()));
-                        System.out.print("|),");
+                        System.out.print("|)");
 
-                        System.out.print(pair.getKey().getOffset() + "," + pair
-                            .getValue().getOffset());
-
-                        System.out.print(" is deleted from the tree.");
+                        System.out.println(" is deleted from the tree.");
 
                         super.delete(pair);
                     }
@@ -504,10 +505,10 @@ public class KVPairTree extends BinarySearchTree<KVPair>
         if (isArtistTree)
         {
             // If artist in the KVPair matches the artist we are trying to list
-            if (memManager.getArtistString(((KVPair)treeRoot.getElement())
+            if (memManager.getItemString(((KVPair)treeRoot.getElement())
                 .getKey().getOffset()).equals(artist))
             {
-                System.out.println("|" + memManager.getSongString(
+                System.out.println("|" + memManager.getItemString(
                     ((KVPair)treeRoot.getElement()).getValue().getOffset())
                     + "|");
             }
@@ -548,10 +549,10 @@ public class KVPairTree extends BinarySearchTree<KVPair>
         if (isArtistTree)
         {
             // If artist in the KVPair matches the artist we are trying to list
-            if (memManager.getSongString(((KVPair)treeRoot.getElement())
+            if (memManager.getItemString(((KVPair)treeRoot.getElement())
                 .getValue().getOffset()).equals(name))
             {
-                System.out.println("|" + memManager.getArtistString(
+                System.out.println("|" + memManager.getItemString(
                     ((KVPair)treeRoot.getElement()).getKey().getOffset())
                     + "|");
             }

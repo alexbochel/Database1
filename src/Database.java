@@ -73,55 +73,103 @@ public class Database
             // insert
             if (command.equals("insert"))
             {
+
                 // Getting the strings for the artist and name of the song
                 scanner.skip(" ");
                 String song = scanner.nextLine();
                 String artist = song.split("<SEP>")[0];
                 String name = song.split("<SEP>")[1];
 
-                // First, create the Handles
-                Handle artistHandle = new Handle(memManager.getArtistSize());
-                Handle nameHandle = new Handle(memManager.getNameSize());
+                if (!artistTable.containsElement(artist) && !songTable
+                    .containsElement(name))
+                {
+                    // First, create the Handles and add to memManager
+                    Handle artistHandle = new Handle(memManager
+                        .getDatabaseSize());
+                    memManager.insertItem(artist);
 
-                // Then create the KVPairs
-                KVPair pairArtist = new KVPair(artistHandle, nameHandle);
-                KVPair pairName = new KVPair(nameHandle, artistHandle);
+                    Handle nameHandle = new Handle(memManager
+                        .getDatabaseSize());
+                    memManager.insertItem(name);
 
-                // Add to the MemoryManager
-                memManager.insertArtist(artist);
-                memManager.insertName(name);
+                    // Then create the KVPairs
+                    KVPair pairArtist = new KVPair(artistHandle, nameHandle);
+                    KVPair pairName = new KVPair(nameHandle, artistHandle);
 
-                // Add the Handles to the HashTables
-                artistTable.insert(artistHandle);
-                songTable.insert(nameHandle);
+                    // Add the Handles to the HashTables
+                    artistTable.insert(artistHandle);
+                    songTable.insert(nameHandle);
 
-                // Add to the KVPairTrees
-                artistTree.insert(pairArtist);
-                songTree.insert(pairName);
-
+                    // Add to the KVPairTrees
+                    artistTree.insert(pairArtist);
+                    songTree.insert(pairName);
+                }
+                // duplicate
+                else
+                {
+                    // print out duplicate info
+                    System.out.println("|" + artist
+                        + "| duplicates a record already in the Artist database.");
+                    System.out.println("|" + name
+                        + "| duplicates a record already in the Song database.");
+                    System.out.println("The KVPair (|" + artist + "|,|" + name
+                        + "|),(" + artistTable.getEntry(artist).getOffset()
+                        + "," + songTable.getEntry(name).getOffset()
+                        + ") duplicates a record already in the tree.");
+                    System.out.println("The KVPair (|" + name + "|,|" + artist
+                        + "|),(" + songTable.getEntry(name).getOffset() + ","
+                        + artistTable.getEntry(artist).getOffset()
+                        + ") duplicates a record already in the tree.");
+                }
             }
 
             // delete
             else if (command.equals("delete"))
             {
                 // Getting the strings for the artist and name of the song
+                scanner.skip(" ");
                 String song = scanner.nextLine();
                 String artist = song.split("<SEP>")[0];
                 String name = song.split("<SEP>")[1];
 
-                // Delete from the trees first (since they rely on the
-                // memManager)
-                artistTree.delete(artist, name);
-                songTree.delete(artist, name);
+                if (artistTable.containsElement(artist))
+                {
+                    if (songTable.containsElement(name))
+                    {
+                        // Delete from the trees first (since they rely on the
+                        // memManager)
+                        artistTree.delete(artist, name);
+                        songTree.delete(artist, name);
 
-                // Delete from the memManager
-                memManager.deleteArtist(artistTable.getEntry(artist)
-                    .getOffset());
-                memManager.deleteName(songTable.getEntry(name).getOffset());
+                        // Delete from the memManager
+                        memManager.deleteItem(artistTable.getEntry(artist)
+                            .getOffset());
+                        memManager.deleteItem(songTable.getEntry(name)
+                            .getOffset());
 
-                // Delete from the Hash Tables last
-                artistTable.delete(artist);
-                songTable.delete(name);
+                        // Delete from the Hash Tables last
+                        artistTable.delete(artist);
+                        songTable.delete(name);
+                    }
+                    // does not contain song
+                    else
+                    {
+                        System.out.println("|" + name
+                            + "| does not exist in the song database.");
+                    }
+                }
+                // does not contain artist
+                else
+                {
+                    System.out.println("|" + artist
+                        + "| does not exist in the artist database.");
+                    // ALSO does not contain name
+                    if (!songTable.containsElement(name))
+                    {
+                        System.out.println("|" + name
+                            + "| does not exist in the song database.");
+                    }
+                }
             }
 
             // remove artist/song
@@ -141,7 +189,7 @@ public class Database
                     {
 
                         // delete artist from memManager and then artistTable
-                        memManager.deleteArtist(artistTable.getEntry(artist)
+                        memManager.deleteItem(artistTable.getEntry(artist)
                             .getOffset());
                         artistTable.delete(artist);
 
@@ -150,7 +198,7 @@ public class Database
                         for (String str : artistTree.getAllSongsFromArtist(
                             artist))
                         {
-                            memManager.deleteName(songTable.getEntry(str)
+                            memManager.deleteItem(songTable.getEntry(str)
                                 .getOffset());
                             songTable.delete(str);
                         }
@@ -177,7 +225,7 @@ public class Database
                     if (songTable.containsElement(name))
                     {
                         // delete name from memManager and then artistTable
-                        memManager.deleteName(artistTable.getEntry(name)
+                        memManager.deleteItem(artistTable.getEntry(name)
                             .getOffset());
                         artistTable.delete(name);
 
@@ -186,7 +234,7 @@ public class Database
                         for (String str : artistTree.getAllArtistsFromSong(
                             name))
                         {
-                            memManager.deleteName(songTable.getEntry(str)
+                            memManager.deleteItem(songTable.getEntry(str)
                                 .getOffset());
                             songTable.delete(str);
                         }
