@@ -14,31 +14,25 @@ public class Database
     private MemoryManager memManager;
     private HashTable     songTable;
     private HashTable     artistTable;
-<<<<<<< HEAD
     private KVPairTree    artistTree;
     private KVPairTree    songTree;
-=======
->>>>>>> fa1f355d55756663b0ad9c515f23584c9345b141
     private Scanner       scanner;
 
 
-    public Database(int initialHashSize, int blockSize, String name, int size)
+    public Database(int initialHashSize, int blockSize, String name)
     {
         // 1. Initialize MemoryManager.
-        memManager = new MemoryManager(size);
+        memManager = new MemoryManager(initialHashSize);
 
         // 2. Initialize two tables and two trees.
-        songTable = new HashTable(size, memManager, true);
-        artistTable = new HashTable(size, memManager, false);
+        songTable = new HashTable(initialHashSize, memManager, true);
+        artistTable = new HashTable(initialHashSize, memManager, false);
 
-<<<<<<< HEAD
         // 3. Initialize two KVPairTrees
         artistTree = new KVPairTree(memManager, true);
         songTree = new KVPairTree(memManager, false);
 
         // 4. Call parse method
-=======
->>>>>>> fa1f355d55756663b0ad9c515f23584c9345b141
         this.parseData(name);
     }
 
@@ -79,8 +73,8 @@ public class Database
             // insert
             if (command.equals("insert"))
             {
-<<<<<<< HEAD
                 // Getting the strings for the artist and name of the song
+                scanner.skip(" ");
                 String song = scanner.nextLine();
                 String artist = song.split("<SEP>")[0];
                 String name = song.split("<SEP>")[1];
@@ -105,21 +99,11 @@ public class Database
                 artistTree.insert(pairArtist);
                 songTree.insert(pairName);
 
-=======
-                String song = scanner.nextLine();
-                String artist = song.split("<SEP>")[0];
-                String name = song.split("<SEP>")[1];
-                
-                memManager.insertArtist(artist);
-                memManager.insertName(name);
-                
->>>>>>> fa1f355d55756663b0ad9c515f23584c9345b141
             }
 
             // delete
             else if (command.equals("delete"))
             {
-<<<<<<< HEAD
                 // Getting the strings for the artist and name of the song
                 String song = scanner.nextLine();
                 String artist = song.split("<SEP>")[0];
@@ -143,75 +127,103 @@ public class Database
             // remove artist/song
             else if (command.equals("remove"))
             {
+                String next = scanner.next();
+
                 // remove artist
-                if (scanner.next().equals("artist"))
+                if (next.equals("artist"))
                 {
                     // Get artist String
+                    scanner.skip(" ");
                     String artist = scanner.nextLine();
 
-                    // delete artist from memManager and then artistTable
-                    memManager.deleteArtist(artistTable.getEntry(artist)
-                        .getOffset());
-                    artistTable.delete(artist);
-
-                    // delete all songs from that artist from memManager and
-                    // then songTable
-                    for (String str : artistTree.getAllSongsFromArtist(artist))
+                    // First check if it is in the table
+                    if (artistTable.containsElement(artist))
                     {
-                        memManager.deleteName(songTable.getEntry(str)
+
+                        // delete artist from memManager and then artistTable
+                        memManager.deleteArtist(artistTable.getEntry(artist)
                             .getOffset());
-                        songTable.delete(str);
+                        artistTable.delete(artist);
+
+                        // delete all songs from that artist from memManager and
+                        // then songTable
+                        for (String str : artistTree.getAllSongsFromArtist(
+                            artist))
+                        {
+                            memManager.deleteName(songTable.getEntry(str)
+                                .getOffset());
+                            songTable.delete(str);
+                        }
+
+                        // delete from trees
+                        artistTree.removeArtist(artist);
+                        songTree.removeArtist(artist);
                     }
-
-                    // delete from trees
-                    artistTree.removeArtist(artist);
-                    songTree.removeArtist(artist);
-
+                    else
+                    {
+                        System.out.println("|" + artist
+                            + "| does not exist in the artist database.");
+                    }
                 }
 
                 // remove song (name)
-                else if (scanner.next().equals("song"))
+                else if (next.equals("song"))
                 {
                     // Get name String
+                    scanner.skip(" ");
                     String name = scanner.nextLine();
 
-                    // delete name from memManager and then artistTable
-                    memManager.deleteName(artistTable.getEntry(name)
-                        .getOffset());
-                    artistTable.delete(name);
-
-                    // delete all songs from that artist from memManager and
-                    // then songTable
-                    for (String str : artistTree.getAllArtistsFromSong(name))
+                    // First check if it's there
+                    if (songTable.containsElement(name))
                     {
-                        memManager.deleteName(songTable.getEntry(str)
+                        // delete name from memManager and then artistTable
+                        memManager.deleteName(artistTable.getEntry(name)
                             .getOffset());
-                        songTable.delete(str);
-                    }
+                        artistTable.delete(name);
 
-                    // delete from trees
-                    artistTree.removeName(name);
-                    songTree.removeName(name);
+                        // delete all songs from that artist from memManager and
+                        // then songTable
+                        for (String str : artistTree.getAllArtistsFromSong(
+                            name))
+                        {
+                            memManager.deleteName(songTable.getEntry(str)
+                                .getOffset());
+                            songTable.delete(str);
+                        }
+
+                        // delete from trees
+                        artistTree.removeName(name);
+                        songTree.removeName(name);
+                    }
+                    else
+                    {
+                        System.out.println("| " + name
+                            + "| does not exist in the song database.");
+                    }
                 }
             }
 
             // print artist / song and print tree
             else if (command.equals("print"))
             {
+
+                String next = scanner.next();
+
                 // print artist
-                if (scanner.next().equals("artist"))
+                if (next.equals("artist"))
                 {
                     artistTable.listElements();
                 }
 
                 // print song
-                else if (scanner.next().equals("song"))
+                else if (next.equals("song"))
                 {
                     songTable.listElements();
 
                 }
-                else if (scanner.next().equals("tree"))
+                else if (next.equals("tree"))
                 {
+                    System.out.println("Printing tree:");
                     artistTree.dump(); // TODO fix this
                 }
             }
@@ -219,57 +231,44 @@ public class Database
             // list
             else if (command.equals("list"))
             {
+
+                String next = scanner.next();
+
                 // list artist
-                if (scanner.next().equals("artist"))
+                if (next.equals("artist"))
                 {
+                    scanner.skip(" ");
                     String artist = scanner.nextLine();
-                    artistTree.listArtist(artist);
+
+                    if (artistTable.containsElement(artist))
+                    {
+                        artistTree.listArtist(artist);
+                    }
+                    else
+                    {
+                        System.out.println("|" + artist
+                            + "| does not exist in the artist database.");
+                    }
                 }
 
                 // list song
-                else if (scanner.next().equals("song"))
+                else if (next.equals("song"))
                 {
-                    String name = scanner.next();
-                    songTree.listSong(name);
+                    scanner.skip(" ");
+                    String name = scanner.nextLine();
+                    if (songTable.containsElement(name))
+                    {
+                        songTree.listSong(name);
+                    }
+                    else
+                    {
+                        System.out.println("|" + name
+                            + "| does not exist in the artist database.");
+                    }
                 }
             }
-=======
-
-            }
-            
-            // remove
-            else if (command.equals("remove"))
-            {
-                
-            }
-            
-            // print artist / song and print tree
-            else if (command.equals("print"))
-            {
-                
-            }
-            
-            // list
-            else if (command.equals("list"))
-            {
-                
-            }
-
->>>>>>> fa1f355d55756663b0ad9c515f23584c9345b141
         }
 
         scanner.close();
     }
-<<<<<<< HEAD
-=======
-
-
-    /**
-     * This method calls the specific command for
-     */
-    private void callCommand(String command)
-    {
-
-    }
->>>>>>> fa1f355d55756663b0ad9c515f23584c9345b141
 }

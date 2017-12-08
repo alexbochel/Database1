@@ -117,7 +117,7 @@ public class HashTable
             }
             else
             {
-                slotCount = (int)(homeSlot + Math.pow(probeOffset, 2));
+                slotCount = (int)(homeSlot + Math.pow(probeOffset, 2)) % this.currentTableSize;
                 probeOffset++;
             }
         }
@@ -148,7 +148,7 @@ public class HashTable
             while (handlesArray[slotCount] != null && !isTombstone(
                 handlesArray[slotCount]))
             {
-                slotCount = (int)(homeSlot + Math.pow(probeOffset, 2));
+                slotCount = (int)(homeSlot + Math.pow(probeOffset, 2)) % this.currentTableSize;
                 probeOffset++;
             }
 
@@ -183,7 +183,7 @@ public class HashTable
         // Probe until the correct string is found.
         while (!getOffsetString(handlesArray[slotCount]).equals(strToDelete))
         {
-            slotCount = (int)(homeSlot + Math.pow(probeOffset, 2));
+            slotCount = (int)(homeSlot + Math.pow(probeOffset, 2) % this.currentTableSize);
             probeOffset++;
         }
 
@@ -280,19 +280,43 @@ public class HashTable
         {
             for (Handle h : handlesArray)
             {
-                System.out.print("|");
-                System.out.print(memManager.getArtistString(h.getOffset()));
-                System.out.print("| " + h.getOffset());
+                if (h != null)
+                {
+                    System.out.print("|");
+                    System.out.print(memManager.getArtistString(h.getOffset()));
+                    System.out.println("| " + h.getOffset());
+                }
             }
+
+            System.out.println("total artists: " + slotsOccupied);
         }
         else
         {
             for (Handle h : handlesArray)
             {
-                System.out.print("|");
-                System.out.print(memManager.getArtistString(h.getOffset()));
-                System.out.print("| " + h.getOffset());
+                if (h != null)
+                {
+                    System.out.print("|");
+                    System.out.print(memManager.getArtistString(h.getOffset()));
+                    System.out.println("| " + h.getOffset());
+                }
             }
+
+            System.out.println("total songs: " + slotsOccupied);
         }
+    }
+
+
+    /**
+     * Returns a boolean that tells us whether this hash table contains the
+     * element that we are looking for
+     * 
+     * @param element
+     *            is the element in the table that we are looking for
+     * @return true if it is in the table. False if it is not
+     */
+    public boolean containsElement(String element)
+    {
+        return (this.find(element) != -1);
     }
 }

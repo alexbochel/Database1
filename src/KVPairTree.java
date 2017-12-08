@@ -98,7 +98,7 @@ public class KVPairTree extends BinarySearchTree<KVPair>
         System.out.print(pair.getKey().getOffset() + "," + pair.getValue()
             .getOffset());
 
-        System.out.print(" is added to the tree.");
+        System.out.println(" is added to the tree.");
         return super.insert(pair);
 
     }
@@ -199,7 +199,7 @@ public class KVPairTree extends BinarySearchTree<KVPair>
         // Artist was not in the tree
         if (!found)
         {
-            System.out.println(artist
+            System.out.println("|" + artist + "|"
                 + " does not exist in the artist database.");
             return false;
         }
@@ -507,7 +507,7 @@ public class KVPairTree extends BinarySearchTree<KVPair>
     {
         if (treeRoot == null)
         {
-            System.out.println(artist
+            System.out.println("|" + artist + "|"
                 + " does not exist in the artist database.");
             return;
         }
@@ -529,14 +529,6 @@ public class KVPairTree extends BinarySearchTree<KVPair>
                     + "|");
             }
         }
-
-        // Commenting the below out for now because otherwise, the list command
-        // would print stuff out twice
-        /**
-         * else { // If artist in the KVPair matches the artist we are trying to
-         * list if (memManager.getArtistString(((KVPair)treeRoot.getElement())
-         * .getValue().getOffset()).equals(artist)) { } }
-         **/
 
         // recursively traverse right tree:
         if (treeRoot.getRight() != null)
@@ -581,14 +573,6 @@ public class KVPairTree extends BinarySearchTree<KVPair>
                     + "|");
             }
         }
-
-        // Commenting the below out for now because otherwise, the list command
-        // would print stuff out twice
-        /*
-         * else { // If artist in the KVPair matches the artist we are trying to
-         * list if (memManager.getSongString(((KVPair)treeRoot.getElement())
-         * .getKey().getOffset()).equals(name)) { } }
-         */
 
         // recursively traverse right tree:
         if (treeRoot.getRight() != null)
