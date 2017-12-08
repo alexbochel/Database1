@@ -195,7 +195,6 @@ public class HashTable
         }
     }
 
-
     /**
      * This method "removes" a specified element from the hashtable by replacing
      * it with a tombstone.

@@ -25,6 +25,7 @@ public class HashTableTest extends student.TestCase {
         int initialSize = 100;
         
         memManager = new MemoryManager(initialSize);
+
         handle = new Handle(memManager.getDatabaseSize());
         memManager.insertItem("The Beatles");
         handle2 = new Handle(memManager.getDatabaseSize());
