@@ -10,12 +10,9 @@ import java.nio.ByteBuffer;
  */
 public class MemoryManager
 {
-    private byte[]           songNames;
-    private byte[]           artistNames;
-    private int              songCapacity;
-    private int              artistCapacity;
-    private int              nameSize;
-    private int              artistSize;
+    private byte[]           dataItems;
+    private int              capacity;
+    private int              size;
     private static final int OFFSET_LENGTH_ONE   = 1;
     private static final int OFFSET_LENGTH_TWO   = 2;
     private static final int OFFSET_STRING_BEGIN = 3;
@@ -27,81 +24,50 @@ public class MemoryManager
      * @param size
      *            Initial Size of the byte arrays.
      */
-    public MemoryManager(int capacity)
+    public MemoryManager(int cap)
     {
-        songCapacity = capacity;
-        artistCapacity = capacity;
-        songNames = new byte[capacity];
-        artistNames = new byte[capacity];
-        nameSize = 0;
-        artistSize = 0;
+        // songCapacity = capacity;
+        // artistCapacity = capacity;
+        capacity = cap;
+        // songNames = new byte[capacity];
+        // artistNames = new byte[capacity];
+        dataItems = new byte[capacity];
+        // nameSize = 0;
+        // artistSize = 0;
+        size = 0;
     }
 
 
     /**
-     * Inserts a new song name into the byte array that holds the song names
+     * Inserts a new item into the byte array that holds the data.
      * 
      * @param name
-     *            is the title of the song to insert
+     *            is the name of the song/artist to insert
      */
-    public void insertName(String name)
+    public void insertItem(String name)
     {
-        if (nameSize + name.getBytes().length > songCapacity)
+        if (size + name.getBytes().length > capacity)
         {
-            this.expandNameArray();
-            songCapacity = songNames.length;
+            this.expandDataArray();
+            capacity = dataItems.length;
         }
 
-        songNames[nameSize] = 1; // Set the name to be active
-        nameSize++;
+        dataItems[size] = 1; // Set the name to be active
+        size++;
 
         for (int i = 2; i < 4; i++)
         {
-            songNames[nameSize] = ByteBuffer.allocate(4).putInt(name.length())
+            dataItems[size] = ByteBuffer.allocate(4).putInt(name.length())
                 .array()[i];
-            nameSize++;
+            size++;
         }
 
         for (byte b : name.getBytes())
         {
-            songNames[nameSize] = b;
-            nameSize++;
+            dataItems[size] = b;
+            size++;
         }
     }
-
-
-    /**
-     * Inserts a new artist into the byte array that holds the names of the
-     * artists
-     * 
-     * @param artist
-     *            is the name of the artist to insert
-     */
-    public void insertArtist(String artist)
-    {
-        if (artistSize + artist.getBytes().length > artistCapacity)
-        {
-            this.expandArtistArray();
-            artistCapacity = artistNames.length;
-        }
-
-        artistNames[artistSize] = 1; // Set the name to be active
-        artistSize++;
-
-        for (int i = 2; i < 4; i++)
-        {
-            artistNames[artistSize] = ByteBuffer.allocate(4).putInt(artist
-                .length()).array()[i];
-            artistSize++;
-        }
-
-        for (byte b : artist.getBytes())
-        {
-            artistNames[artistSize] = b;
-            artistSize++;
-        }
-    }
-
 
     /**
      * Deletes a song name from the songNames byte array by setting the first
@@ -110,50 +76,22 @@ public class MemoryManager
      * @param offset
      *            is the position in the byte array to set to 0
      */
-    public void deleteName(int offset)
+    public void deleteItem(int offset)
     {
-        songNames[offset] = 0;
+        dataItems[offset] = 0;
     }
-
-
-    /**
-     * Deletes an artist from the artistNames byte array by setting the first
-     * byte to 0, thus indicating that it is inactive
-     * 
-     * @param offset
-     *            is the position in the byte array to set to 0
-     */
-    public void deleteArtist(int offset)
-    {
-        artistNames[offset] = 0;
-    }
-
 
     /**
      * Exapnds the byte array that holds the names of the artists if the array
      * is too small to hold the next entry. It expands the array by doubling the
      * size.
      */
-    public void expandArtistArray()
+    public void expandDataArray()
     {
-        byte[] newArr = new byte[artistNames.length * 2];
-        System.arraycopy(artistNames, 0, newArr, 0, artistNames.length);
-        artistNames = newArr;
+        byte[] newArr = new byte[dataItems.length * 2];
+        System.arraycopy(dataItems, 0, newArr, 0, dataItems.length);
+        dataItems = newArr;
     }
-
-
-    /**
-     * Exapnds the byte array that holds the names of the songs if the array is
-     * too small to hold the next entry. It expands the array by doubling the
-     * size.
-     */
-    public void expandNameArray()
-    {
-        byte[] newArr = new byte[songNames.length * 2];
-        System.arraycopy(songNames, 0, newArr, 0, songNames.length);
-        songNames = newArr;
-    }
-
 
     // -----------------------------------------------------------------------
 
@@ -164,66 +102,29 @@ public class MemoryManager
      *            Place in array for song.
      * @return String Songs name.
      */
-    public String getSongString(int offset)
+    public String getItemString(int offset)
     {
-        byte[] songByteLength = new byte[4];
-        songByteLength[0] = 0;
-        songByteLength[1] = 0;
-        songByteLength[2] = songNames[offset + OFFSET_LENGTH_ONE];
-        songByteLength[3] = songNames[offset + OFFSET_LENGTH_TWO];
-        int length = bytesToInt(songByteLength);
+        byte[] dataByteLength = new byte[4];
+        dataByteLength[0] = 0;
+        dataByteLength[1] = 0;
+        dataByteLength[2] = dataItems[offset + OFFSET_LENGTH_ONE];
+        dataByteLength[3] = dataItems[offset + OFFSET_LENGTH_TWO];
+        int length = bytesToInt(dataByteLength);
 
-        byte[] songStringBytes = new byte[length];
-        System.arraycopy(songNames, offset + OFFSET_STRING_BEGIN,
-            songStringBytes, 0, length);
-        String songTitle = "";
-        
+        byte[] itemStringBytes = new byte[length];
+        System.arraycopy(dataItems, offset + OFFSET_STRING_BEGIN,
+            itemStringBytes, 0, length);
+        String itemName = "";
         try
         {
-            songTitle = new String(songStringBytes, "ISO-8859-1");
+            itemName = new String(itemStringBytes, "ISO-8859-1");
         }
         catch (UnsupportedEncodingException e)
         {
             e.printStackTrace();
         }
-
-        return songTitle;
+        return itemName;
     }
-
-
-    /**
-     * This uses an offset to find a String representation of the artist.
-     * 
-     * @param offset
-     *            Place in array for artist.
-     * @return String Artists name.
-     */
-    public String getArtistString(int offset)
-    {
-        byte[] artistByteLength = new byte[4];
-        artistByteLength[0] = 0;
-        artistByteLength[1] = 0;
-        artistByteLength[2] = artistNames[offset + OFFSET_LENGTH_ONE];
-        artistByteLength[3] = artistNames[offset + OFFSET_LENGTH_TWO];
-        int length = bytesToInt(artistByteLength);
-
-        byte[] artistStringBytes = new byte[length];
-        System.arraycopy(artistNames, offset + OFFSET_STRING_BEGIN,
-            artistStringBytes, 0, length);
-        String artistName = "";
-
-        try
-        {
-            artistName = new String(artistStringBytes, "ISO-8859-1");
-        }
-        catch (UnsupportedEncodingException e)
-        {
-            e.printStackTrace();
-        }
-
-        return artistName;
-    }
-
 
     /**
      * This method converts bytes to an integer value.
@@ -238,28 +139,15 @@ public class MemoryManager
         return asInt;
     }
 
-
     /**
      * Getter method for the byte array that holds the song names
      * 
      * @return the songNames field, which is a byte array
      */
-    public byte[] getSongNames()
+    public byte[] getDataItems()
     {
-        return songNames;
+        return dataItems;
     }
-
-
-    /**
-     * Getter method for the byte array that holds the artist names
-     * 
-     * @return the artistNames field, which is a byte array
-     */
-    public byte[] getArtistNames()
-    {
-        return artistNames;
-    }
-
 
     /**
      * Getter method for the current size of the songNames array. In this
@@ -267,20 +155,8 @@ public class MemoryManager
      * 
      * @return the nameSize field, which is an int
      */
-    public int getNameSize()
+    public int getDatabaseSize()
     {
-        return nameSize;
-    }
-
-
-    /**
-     * Getter method for the current size of the artistNames array. In this
-     * context, size is the number of elements in the array
-     * 
-     * @return the artistSize field, which is an int
-     */
-    public int getArtistSize()
-    {
-        return artistSize;
+        return size;
     }
 }
