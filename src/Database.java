@@ -73,6 +73,7 @@ public class Database
             // insert
             if (command.equals("insert"))
             {
+
                 // Getting the strings for the artist and name of the song
                 scanner.skip(" ");
                 String song = scanner.nextLine();
@@ -87,18 +88,39 @@ public class Database
                 KVPair pairArtist = new KVPair(artistHandle, nameHandle);
                 KVPair pairName = new KVPair(nameHandle, artistHandle);
 
-                // Add to the MemoryManager
-                memManager.insertArtist(artist);
-                memManager.insertName(name);
+                if (!artistTable.containsElement(artist) && !songTable
+                    .containsElement(name))
+                {
 
-                // Add the Handles to the HashTables
-                artistTable.insert(artistHandle);
-                songTable.insert(nameHandle);
+                    // Add to the MemoryManager
+                    memManager.insertArtist(artist);
+                    memManager.insertName(name);
 
-                // Add to the KVPairTrees
-                artistTree.insert(pairArtist);
-                songTree.insert(pairName);
+                    // Add the Handles to the HashTables
+                    artistTable.insert(artistHandle);
+                    songTable.insert(nameHandle);
 
+                    // Add to the KVPairTrees
+                    artistTree.insert(pairArtist);
+                    songTree.insert(pairName);
+                }
+                // duplicate
+                else
+                {
+                    // print out duplicate info
+                    System.out.println("|" + artist
+                        + "| duplicates a record already in the Artist database.");
+                    System.out.println("|" + name
+                        + "| duplicates a record already in the Song database.");
+                    System.out.println("The KVPair (|" + artist + "|,|" + song
+                        + "|),(" + artistHandle.getOffset() + "," + nameHandle
+                            .getOffset()
+                        + ") duplicates a record already in the tree.");
+                    System.out.println("The KVPair (|" + name + "|,|" + artist
+                        + "|),(" + nameHandle.getOffset() + "," + artistHandle
+                            .getOffset()
+                        + ") duplicates a record already in the tree.");
+                }
             }
 
             // delete
