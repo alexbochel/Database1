@@ -136,20 +136,41 @@ public class Database
                 {
                     if (songTable.containsElement(name))
                     {
-                        // Delete from the trees first (since they rely on the
-                        // memManager)
-                        artistTree.delete(artist, name);
-                        songTree.delete(artist, name);
+                        if (artistTree.doesPairExist(artist, name))
+                        {
+                            // Delete from the trees first (since they rely on
+                            // the
+                            // memManager)
+                            artistTree.delete(artist, name);
+                            songTree.delete(artist, name);
 
-                        // Delete from the memManager
-                        memManager.deleteItem(artistTable.getEntry(artist)
-                            .getOffset());
-                        memManager.deleteItem(songTable.getEntry(name)
-                            .getOffset());
+                            // Delete from the memManager
+                            memManager.deleteItem(artistTable.getEntry(artist)
+                                .getOffset());
+                            memManager.deleteItem(songTable.getEntry(name)
+                                .getOffset());
 
-                        // Delete from the Hash Tables last
-                        artistTable.delete(artist);
-                        songTable.delete(name);
+                            // Delete from the Hash Tables last
+                            if (artistTable.delete(artist) != -1)
+                            {
+                                System.out.println("|" + artist
+                                    + "| is deleted from the artist database.");
+                            }
+
+                            if (songTable.delete(name) != -1)
+                            {
+                                System.out.println("|" + name
+                                    + "| is deleted from the song database.");
+                            }
+                        }
+                        // Both exist but are not pairs
+                        else
+                        {
+                            System.out.println("The KVPair (|" + artist + "|,|"
+                                + name + "|) was not found in the database.");
+                            System.out.println("The KVPair (|" + name + "|,|"
+                                + artist + "|) was not found in the database.");
+                        }
                     }
                     // does not contain song
                     else
@@ -163,12 +184,6 @@ public class Database
                 {
                     System.out.println("|" + artist
                         + "| does not exist in the artist database.");
-                    // ALSO does not contain name
-                    if (!songTable.containsElement(name))
-                    {
-                        System.out.println("|" + name
-                            + "| does not exist in the song database.");
-                    }
                 }
             }
 
@@ -271,8 +286,11 @@ public class Database
                 }
                 else if (next.equals("tree"))
                 {
-                    System.out.println("Printing tree:");
+                    System.out.println("Printing artist tree:");
                     artistTree.dump(); // TODO fix this
+                    
+                    System.out.println("Printing song tree:");
+                    songTree.dump();
                 }
             }
 
