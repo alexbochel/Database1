@@ -109,9 +109,10 @@ public class HashTable
                                                 // that we do not reach the end
                                                 // of the array.
         {
-            if (memManager.getItemString(handlesArray[slotCount].getOffset()).equals(handleString))
+            if (memManager.getItemString(handlesArray[slotCount].getOffset())
+                .equals(handleString))
             {
-                strSlot = slotCount;  
+                strSlot = slotCount;
                 break;
             }
             else
@@ -156,7 +157,7 @@ public class HashTable
             handlesArray[slotCount] = handle;
             slotsOccupied++;
             occupiedIndecies.add(slotCount);
-           
+
             // If the table is over 50% full, call resizeTable.
             if (slotsOccupied > (currentTableSize / 2))
             {
@@ -211,7 +212,7 @@ public class HashTable
 
         // Probe until the correct string is found.
         while (!memManager.getItemString(handlesArray[slotCount].getOffset())
-                .equals(strToDelete))
+            .equals(strToDelete))
         {
             slotCount = (int)(homeSlot + Math.pow(probeOffset, 2)
                 % this.currentTableSize);
@@ -222,7 +223,7 @@ public class HashTable
         slotsOccupied--;
 
         for (int i = 0; i < occupiedIndecies.size(); i++)
-        {   
+        {
             if (occupiedIndecies.get(i) == slotCount)
             {
                 occupiedIndecies.remove(i);
@@ -290,6 +291,7 @@ public class HashTable
         return (int)(Math.abs(sum) % m);
     }
 
+
     /**
      * This method is used for the print artist/song maethod. It will print out
      * the elements followed by the offset of that element
@@ -304,7 +306,8 @@ public class HashTable
                 {
                     System.out.print("|");
                     System.out.print(memManager.getItemString(h.getOffset()));
-                    System.out.println("| " + h.getOffset());
+                    System.out.println("| " + this.find(memManager
+                        .getItemString(h.getOffset())));
                 }
             }
 
@@ -318,7 +321,8 @@ public class HashTable
                 {
                     System.out.print("|");
                     System.out.print(memManager.getItemString(h.getOffset()));
-                    System.out.println("| " + h.getOffset());
+                    System.out.println("| " + this.find(memManager
+                        .getItemString(h.getOffset())));
                 }
             }
 

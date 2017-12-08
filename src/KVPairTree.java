@@ -293,8 +293,15 @@ public class KVPairTree extends BinarySearchTree<KVPair>
             System.out.println(
                 "You called the getAllSongsFromArtist method on a songTree! Don't do that!");
         }
-
-        return (String[])songList.toArray();
+        
+        String[] strings = new String[songList.toArray().length];
+        
+        for (int i = 0; i < strings.length; i++)
+        {
+            strings[i] = songList.get(i);
+        }
+        
+        return strings;
     }
 
 
