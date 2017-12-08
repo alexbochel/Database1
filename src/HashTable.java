@@ -302,7 +302,7 @@ public class HashTable
         {
             for (Handle h : handlesArray)
             {
-                if (h != null)
+                if (h != null && h.getOffset() != -1)
                 {
                     System.out.print("|");
                     System.out.print(memManager.getItemString(h.getOffset()));

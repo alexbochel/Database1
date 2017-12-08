@@ -510,13 +510,12 @@ public class BinarySearchTree<T extends Comparable<? super T>>
             System.out.print(" ");
         }
 
-        System.out.print("Depth: " + this.getHeight(treeRoot.getElement())
-            + ". ");
-
+        System.out.print("(");
         System.out.print(((KVPair)treeRoot.getElement()).getKey().getOffset());
-        System.out.print(" ");
-        System.out.println(((KVPair)treeRoot.getElement()).getValue()
+        System.out.print(",");
+        System.out.print(((KVPair)treeRoot.getElement()).getValue()
             .getOffset());
+        System.out.println(")");
 
         // recursively traverse right tree:
         if (treeRoot.getRight() != null)
