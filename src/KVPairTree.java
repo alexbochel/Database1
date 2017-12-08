@@ -83,7 +83,7 @@ public class KVPairTree extends BinarySearchTree<KVPair>
             System.out.print("|,|");
             System.out.print(memManager.getSongString(pair.getValue()
                 .getOffset()));
-            System.out.print("|),");
+            System.out.print("|), (");
         }
         else
         {
@@ -92,14 +92,17 @@ public class KVPairTree extends BinarySearchTree<KVPair>
             System.out.print("|,|");
             System.out.print(memManager.getArtistString(pair.getValue()
                 .getOffset()));
-            System.out.print("|),");
+            System.out.print("|), (");
         }
 
         System.out.print(pair.getKey().getOffset() + "," + pair.getValue()
             .getOffset());
 
-        System.out.println(" is added to the tree.");
-        return super.insert(pair);
+        System.out.println(") is added to the tree.");
+        
+        boolean didInsert = super.insert(pair);
+        
+        return didInsert;
 
     }
 
@@ -124,29 +127,18 @@ public class KVPairTree extends BinarySearchTree<KVPair>
                     // print it to the console
                     System.out.print("The KVPair (|");
 
-                    if (isArtistTree)
-                    {
-                        System.out.print(memManager.getArtistString(pair
-                            .getKey().getOffset()));
-                        System.out.print("|,|");
-                        System.out.print(memManager.getSongString(pair
-                            .getValue().getOffset()));
-                        System.out.print("|),");
-                    }
-                    else
-                    {
-                        System.out.print(memManager.getSongString(pair.getKey()
-                            .getOffset()));
-                        System.out.print("|,|");
-                        System.out.print(memManager.getArtistString(pair
-                            .getValue().getOffset()));
-                        System.out.print("|),");
-                    }
+                    System.out.print(memManager.getArtistString(pair.getKey()
+                        .getOffset()));
+                    System.out.print("|,|");
+                    System.out.print(memManager.getSongString(pair.getValue()
+                        .getOffset()));
+                    System.out.print("|),");
 
                     System.out.print(pair.getKey().getOffset() + "," + pair
                         .getValue().getOffset());
 
                     System.out.print(" is deleted from the tree.");
+                    
                     super.delete(pair);
                 }
             }
@@ -167,29 +159,18 @@ public class KVPairTree extends BinarySearchTree<KVPair>
                     // print it out
                     System.out.print("The KVPair (|");
 
-                    if (isArtistTree)
-                    {
-                        System.out.print(memManager.getArtistString(pair
-                            .getKey().getOffset()));
-                        System.out.print("|,|");
-                        System.out.print(memManager.getSongString(pair
-                            .getValue().getOffset()));
-                        System.out.print("|),");
-                    }
-                    else
-                    {
-                        System.out.print(memManager.getSongString(pair.getKey()
-                            .getOffset()));
-                        System.out.print("|,|");
-                        System.out.print(memManager.getArtistString(pair
-                            .getValue().getOffset()));
-                        System.out.print("|),");
-                    }
+                    System.out.print(memManager.getSongString(pair.getKey()
+                        .getOffset()));
+                    System.out.print("|,|");
+                    System.out.print(memManager.getArtistString(pair.getValue()
+                        .getOffset()));
+                    System.out.print("|),");
 
                     System.out.print(pair.getKey().getOffset() + "," + pair
                         .getValue().getOffset());
 
                     System.out.print(" is deleted from the tree.");
+                    
                     super.delete(pair);
                 }
             }
@@ -240,6 +221,7 @@ public class KVPairTree extends BinarySearchTree<KVPair>
                         .getValue().getOffset());
 
                     System.out.print(" is deleted from the tree.");
+                    
                     super.delete(pair);
                 }
             }
@@ -269,6 +251,7 @@ public class KVPairTree extends BinarySearchTree<KVPair>
                         .getValue().getOffset());
 
                     System.out.print(" is deleted from the tree.");
+                    
                     super.delete(pair);
                 }
             }

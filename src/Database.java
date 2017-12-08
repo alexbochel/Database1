@@ -87,13 +87,13 @@ public class Database
                 KVPair pairArtist = new KVPair(artistHandle, nameHandle);
                 KVPair pairName = new KVPair(nameHandle, artistHandle);
 
-                // Add the Handles to the HashTables
-                artistTable.insert(artistHandle);
-                songTable.insert(nameHandle);
-
                 // Add to the MemoryManager
                 memManager.insertArtist(artist);
                 memManager.insertName(name);
+
+                // Add the Handles to the HashTables
+                artistTable.insert(artistHandle);
+                songTable.insert(nameHandle);
 
                 // Add to the KVPairTrees
                 artistTree.insert(pairArtist);
