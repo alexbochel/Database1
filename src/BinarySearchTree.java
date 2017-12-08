@@ -140,7 +140,7 @@ public class BinarySearchTree<T extends Comparable<? super T>>
     public boolean insert(T x)
     {
         root = insert(x, root, 0);
-        return (root == null);
+        return (root != null);
     }
 
 
