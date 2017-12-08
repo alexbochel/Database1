@@ -155,7 +155,7 @@ public class HashTable
             }
 
             handlesArray[slotCount] = handle;
-            slotsOccupied++;
+            slotsOccupied++;  
             occupiedIndecies.add(slotCount);
 
             // If the table is over 50% full, call resizeTable.
