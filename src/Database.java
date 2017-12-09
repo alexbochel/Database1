@@ -407,7 +407,7 @@ public class Database
             }
 
             // print artist / song and print tree
-            else if (command.equals("print"))
+            else if (command.equals("print")) 
             {
 
                 String next = scanner.next();
@@ -427,7 +427,7 @@ public class Database
                 else if (next.equals("tree"))
                 {
                     System.out.println("Printing artist tree:");
-                    artistTree.dump(); // TODO fix this
+                    artistTree.dump(); 
 
                     System.out.println("Printing song tree:");
                     songTree.dump();

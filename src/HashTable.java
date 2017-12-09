@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * This class includes the impmentation for the hashing data structure.
@@ -148,6 +149,12 @@ public class HashTable
      */
     public int insert(Handle handle)
     {
+        // If the table is over 50% full, call resizeTable.
+        if (slotsOccupied + 1 > (currentTableSize / 2))
+        {
+            expandTable();
+        }
+        
         // Handle string depends on type of table, song or artist.
         String handleString = memManager.getItemString(handle.getOffset());
 
@@ -169,11 +176,11 @@ public class HashTable
             slotsOccupied++;
             occupiedIndecies.add(slotCount);
 
-            // If the table is over 50% full, call resizeTable.
-            if (slotsOccupied > (currentTableSize / 2))
-            {
-                expandTable();
-            }
+//            // If the table is over 50% full, call resizeTable.
+//            if (slotsOccupied > (currentTableSize / 2))
+//            {
+//                expandTable();
+//            }
 
             if (!isSongTable)
             {
@@ -262,6 +269,8 @@ public class HashTable
         currentTableSize = currentTableSize * 2;
         handlesArray = new Handle[currentTableSize];
         ArrayList<Integer> oldIndecies = new ArrayList<Integer>();
+        
+        Collections.sort(occupiedIndecies);
 
         for (int i = 0; i < occupiedIndecies.size(); i++)
         {
