@@ -38,43 +38,6 @@ public class KVPairTree extends BinarySearchTree<KVPair>
      */
     public boolean insert(KVPair pair)
     {
-        if (super.find(pair) != null)
-        {
-            if (super.find(pair).getValue().getOffset() == pair.getValue()
-                    .getOffset())
-            {
-                // there is a duplicate in the tree already
-
-                System.out.print("The KVPair (|");
-
-                if (isArtistTree)
-                {
-                    System.out.print(memManager.getItemString(pair.getKey()
-                            .getOffset()));
-                    System.out.print("|,|");
-                    System.out.print(memManager.getItemString(pair.getValue()
-                            .getOffset()));
-                    System.out.print("|),");
-                }
-                else
-                {
-                    System.out.print(memManager.getItemString(pair.getKey()
-                            .getOffset()));
-                    System.out.print("|,|");
-                    System.out.print(memManager.getItemString(pair.getValue()
-                            .getOffset()));
-                    System.out.print("|),");
-
-                }
-
-                System.out.print(pair.getKey().getOffset() + "," + pair
-                        .getValue().getOffset());
-
-                System.out.print(" duplicates a record already in the tree.");
-
-                return false;
-            }
-        }
 
         System.out.print("The KVPair (|");
 
@@ -182,15 +145,7 @@ public class KVPairTree extends BinarySearchTree<KVPair>
 
         }
 
-        // Artist was not in the tree
-        if (!found)
-        {
-            System.out.println("|" + artist + "|"
-                    + " does not exist in the artist database.");
-            return false;
-        }
-
-        return true;
+        return found;
     }
 
     /**
@@ -264,14 +219,7 @@ public class KVPairTree extends BinarySearchTree<KVPair>
             }
         }
 
-        // Song was not in the tree
-        if (!found)
-        {
-            System.out.println(name + " does not exist in the song database.");
-            return false;
-        }
-
-        return true;
+        return found;
     }
 
     /**
@@ -477,19 +425,6 @@ public class KVPairTree extends BinarySearchTree<KVPair>
             }
         }
 
-        if (!foundArtist || !foundSong)
-        {
-            if (!foundArtist)
-            {
-                System.out.println(artist
-                        + " does not exist in the artist database.");
-            }
-            else
-            {
-                System.out.println(name
-                        + " does not exist in the song database.");
-            }
-        }
     }
 
 
@@ -514,12 +449,6 @@ public class KVPairTree extends BinarySearchTree<KVPair>
      */
     private void listDumpArtist(BinaryNode<KVPair> treeRoot, String artist)
     {
-        if (treeRoot == null)
-        {
-            System.out.println("|" + artist + "|"
-                    + " does not exist in the artist database.");
-            return;
-        }
 
         // recursively traverse left tree:
         if (treeRoot.getLeft() != null)
@@ -555,11 +484,6 @@ public class KVPairTree extends BinarySearchTree<KVPair>
      */
     private void listDumpSong(BinaryNode<KVPair> treeRoot, String name)
     {
-        if (treeRoot == null)
-        {
-            System.out.println(name + " does not exist in the song database.");
-            return;
-        }
 
         // recursively traverse left tree:
         if (treeRoot.getLeft() != null)
