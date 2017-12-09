@@ -42,7 +42,7 @@ public class HandleTest extends student.TestCase
 
         assertTrue(handle.compareTo(biggerHandle) <= 0);
         assertTrue(handle.compareTo(smallerHandle) >= 0);
-        assertTrue(handle.compareTo(sameHandle) == 0);
+        assertEquals(0, handle.compareTo(sameHandle));
     }
 
 }

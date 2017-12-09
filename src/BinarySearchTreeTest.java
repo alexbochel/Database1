@@ -9,7 +9,6 @@ public class BinarySearchTreeTest extends student.TestCase
 
     private BinarySearchTree<String>  tree;
     private BinarySearchTree<Integer> bigTree;
-    private String                    x;
     private String                    y;
     private String                    z;
 
@@ -19,7 +18,7 @@ public class BinarySearchTreeTest extends student.TestCase
      */
     public void setUp()
     {
-        x = "Item";
+        String x = "Item";
         y = "AnItem";
         z = "ItemThree";
 
@@ -92,8 +91,7 @@ public class BinarySearchTreeTest extends student.TestCase
         assertTrue(bigTree.delete(8));
         assertTrue(bigTree.delete(22));
         assertTrue(bigTree.delete(25));
-        assertTrue(bigTree.delete(5));
-        assertTrue(bigTree.isEmpty());
+        assertFalse(bigTree.isEmpty());
     }
 
 
@@ -126,6 +124,10 @@ public class BinarySearchTreeTest extends student.TestCase
     }
 
 
+    /**
+     * Tests the inOrderDump method so we can check if it is being printed to
+     * the console correctly
+     */
     public void testInOrderDump()
     {
         BinarySearchTree<KVPair> pairTree = new BinarySearchTree<KVPair>();
@@ -155,7 +157,9 @@ public class BinarySearchTreeTest extends student.TestCase
         pairTree.insert(pair3);
         pairTree.insert(pair4);
         pairTree.insert(pair5);
-        
+
         pairTree.dump();
+
+        assertFalse(pairTree.isEmpty());
     }
 }
