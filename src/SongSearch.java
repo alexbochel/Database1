@@ -15,6 +15,8 @@ public class SongSearch
     public static void main(String[] args)
     {
         @SuppressWarnings("unused")
-        Database database = new Database(Integer.parseInt(args[0]), Integer.parseInt(args[1]), args[2]);
+        Database database = new Database(Integer.parseInt(args[0]), 
+                Integer.parseInt(args[1]), args[2]);
     }
 }
+  

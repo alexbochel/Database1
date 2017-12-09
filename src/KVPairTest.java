@@ -7,8 +7,6 @@
  */
 public class KVPairTest extends student.TestCase
 {
-    private Handle name;
-    private Handle artist;
     private KVPair pair;
 
 
@@ -17,11 +15,12 @@ public class KVPairTest extends student.TestCase
      */
     public void setUp()
     {
+        Handle name;
+        Handle artist;
         name = new Handle(10);
         artist = new Handle(50);
         pair = new KVPair(artist, name);
     }
-
 
     /**
      * Tests the getKey() method to make sure it is returning the correct Handle
@@ -30,7 +29,6 @@ public class KVPairTest extends student.TestCase
     {
         assertEquals(50, pair.getKey().getOffset());
     }
-
 
     /**
      * Tests the getValue() method to make sure it is returning the correct

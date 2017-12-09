@@ -48,27 +48,6 @@ public class HashTableTest extends student.TestCase {
     }
     
     /**
-     * This tests the hashing function in the HashTable class. 
-     */
-    public void testHash()
-    {
-        // Added
-        System.out.println(artistTable.hash("The Beatles", 10));
-        System.out.println(artistTable.hash("EDEN", 10));
-        System.out.println(artistTable.hash("Sum 41", 10));
-        
-        // Not added but not dupes
-        System.out.println(artistTable.hash("Soulstice", 10));
-        System.out.println(artistTable.hash("Bon Jovi", 10));
-        System.out.println(artistTable.hash("Prince", 10));
-        
-        // Repeats
-        System.out.println(artistTable.hash("Radical Face", 10));
-        System.out.println(artistTable.hash("Owl City", 10));
-        System.out.println(artistTable.hash("The Bums", 10));
-    }
-    
-    /**
      * This tests the insert function for the hash table when there are no
      * same slot items. 
      */
