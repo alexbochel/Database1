@@ -104,6 +104,11 @@ public class MemoryManager
      */
     public String getItemString(int offset)
     {
+        if (offset < 0)
+        {
+            return "";
+        }
+        
         byte[] dataByteLength = new byte[4];
         dataByteLength[0] = 0;
         dataByteLength[1] = 0;
