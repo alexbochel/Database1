@@ -349,8 +349,6 @@ public class KVPairTree extends BinarySearchTree<KVPair>
     public void delete(String artist, String name)
     {
         Iterator<KVPair> iterator = this.iterator();
-        boolean foundArtist = false;
-        boolean foundSong = false;
 
         if (isArtistTree)
         {
@@ -362,13 +360,11 @@ public class KVPairTree extends BinarySearchTree<KVPair>
                 if (memManager.getItemString(pair.getKey().getOffset()).equals(
                         artist))
                 {
-                    foundArtist = true;
 
                     // if song name also matches
                     if (memManager.getItemString(pair.getValue().getOffset())
                             .equals(name))
                     {
-                        foundSong = true;
 
                         // print to the console
                         System.out.print("The KVPair (|");
@@ -399,13 +395,11 @@ public class KVPairTree extends BinarySearchTree<KVPair>
                 if (memManager.getItemString(pair.getValue().getOffset())
                         .equals(artist))
                 {
-                    foundArtist = true;
 
                     // if song name also matches
                     if (memManager.getItemString(pair.getKey().getOffset())
                             .equals(name))
                     {
-                        foundSong = true;
 
                         // print to the console
                         System.out.print("The KVPair (|");
