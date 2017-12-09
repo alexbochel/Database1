@@ -69,12 +69,6 @@ public class BinarySearchTree<T extends Comparable<? super T>>
     }
 
 
-    public T findKey(T x)
-    {
-        return find(x, root);
-    }
-
-
     /**
      * Helps find specific item using the element and the root
      * 
@@ -83,30 +77,6 @@ public class BinarySearchTree<T extends Comparable<? super T>>
      * @return an element of a node
      */
     private T find(T x, BinaryNode<T> elemRoot)
-    {
-        if (elemRoot == null)
-        {
-            return null;
-        }
-
-        int compareResult = x.compareTo(elemRoot.element);
-
-        if (compareResult < 0)
-        {
-            return find(x, elemRoot.left);
-        }
-        else if (compareResult > 0)
-        {
-            return find(x, elemRoot.right);
-        }
-        else
-        {
-            return elemRoot.element;
-        }
-    }
-
-
-    private T findKey(T x, BinaryNode<T> elemRoot)
     {
         if (elemRoot == null)
         {
@@ -335,6 +305,7 @@ public class BinarySearchTree<T extends Comparable<? super T>>
          * This sets the element of the node.
          * 
          * @param element2
+         *            is the element that you would like to set in the tree
          */
         public void setElement(T element2)
         {
@@ -491,6 +462,14 @@ public class BinarySearchTree<T extends Comparable<? super T>>
     }
 
 
+    /**
+     * This is an in order dump of the tree. It assumes that the elements being
+     * stored in the tree are KVPairs, since that is what is happening within
+     * the context of this project
+     * 
+     * @param treeRoot
+     *            is the root of the tree/subtree
+     */
     private void inOrderDump(BinaryNode<T> treeRoot)
     {
         if (treeRoot == null)
@@ -504,7 +483,6 @@ public class BinarySearchTree<T extends Comparable<? super T>>
             inOrderDump(treeRoot.getLeft());
         }
 
-        // TODO Indenting and Info for the current note
         for (int i = 0; i < this.getHeight(treeRoot.getElement()) * 2; i++)
         {
             System.out.print(" ");

@@ -9,7 +9,6 @@ import java.util.Collections;
  */
 public class HashTable
 {
-    private int                initialSize;
     private int                currentTableSize;
     private int                slotsOccupied;
     private ArrayList<Integer> occupiedIndecies;
@@ -34,10 +33,9 @@ public class HashTable
     {
         memManager = manager;
         isSongTable = isSong;
-        initialSize = size;
         occupiedIndecies = new ArrayList<Integer>();
-        handlesArray = new Handle[initialSize];
-        currentTableSize = initialSize;
+        handlesArray = new Handle[size];
+        currentTableSize = size;
         slotsOccupied = 0;
         tombstone = new Handle(-1);
     }
@@ -80,7 +78,10 @@ public class HashTable
      * This method determines whether or not a given handle is a tombstone by
      * checking to see if it's value is -1.
      * 
-     * @return Whether or not handle is tombstone.
+     * @param handle
+     *            is the Handle to check to see if it is a tombstone or not
+     * @return Whether or not handle is tombstone. True if it is, and False if
+     *         it is not.
      */
     public boolean isTombstone(Handle handle)
     {
@@ -117,9 +118,7 @@ public class HashTable
         int slotCount = homeSlot;
         int probeOffset = 1;
 
-        while (handlesArray[slotCount] != null) // TODO: Might have to ensure
-        // that we do not reach the end
-        // of the array.
+        while (handlesArray[slotCount] != null)
         {
             if (memManager.getItemString(handlesArray[slotCount].getOffset())
                 .equals(handleString))
@@ -141,8 +140,6 @@ public class HashTable
     /**
      * This method inserts a new handle in the hashtable.
      * 
-     * @param string
-     *            Name of artist or song title.
      * @param handle
      *            Offset of element being inserted into the table.
      * @return Index of element in table.
@@ -154,7 +151,7 @@ public class HashTable
         {
             expandTable();
         }
-        
+
         // Handle string depends on type of table, song or artist.
         String handleString = memManager.getItemString(handle.getOffset());
 
@@ -176,11 +173,11 @@ public class HashTable
             slotsOccupied++;
             occupiedIndecies.add(slotCount);
 
-//            // If the table is over 50% full, call resizeTable.
-//            if (slotsOccupied > (currentTableSize / 2))
-//            {
-//                expandTable();
-//            }
+// // If the table is over 50% full, call resizeTable.
+// if (slotsOccupied > (currentTableSize / 2))
+// {
+// expandTable();
+// }
 
             if (!isSongTable)
             {
@@ -269,7 +266,7 @@ public class HashTable
         currentTableSize = currentTableSize * 2;
         handlesArray = new Handle[currentTableSize];
         ArrayList<Integer> oldIndecies = new ArrayList<Integer>();
-        
+
         Collections.sort(occupiedIndecies);
 
         for (int i = 0; i < occupiedIndecies.size(); i++)
@@ -382,8 +379,6 @@ public class HashTable
      * called from the expandTable method. It does not output to the console
      * because these songs are technically already in the database
      * 
-     * @param string
-     *            Name of artist or song title.
      * @param handle
      *            Offset of element being inserted into the table.
      * @return Index of element in table.

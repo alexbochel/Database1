@@ -36,6 +36,11 @@ public class Handle implements Comparable<Handle>
 
     /**
      * Compares the offset in this Handle to the offset in another Handle
+     * 
+     * @param handle2
+     *            is the Handle you want to compare this Handle with
+     * @return an int that will compare the offset in this Handle to another
+     *         Handle
      */
     public int compareTo(Handle handle2)
     {

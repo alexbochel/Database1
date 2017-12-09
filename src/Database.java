@@ -16,9 +16,19 @@ public class Database
     private HashTable     artistTable;
     private KVPairTree    artistTree;
     private KVPairTree    songTree;
-    private Scanner       scanner;
 
 
+    /**
+     * This is the constructor for the Database class that will initialize the
+     * MemoryManager, HashTables, KVPairs, and then start the parsing process
+     * 
+     * @param initialHashSize
+     *            initial size of the HashTables
+     * @param blockSize
+     *            initial size of the byte arrays
+     * @param name
+     *            the name of the file to read
+     */
     public Database(int initialHashSize, int blockSize, String name)
     {
         // 1. Initialize MemoryManager.
@@ -46,6 +56,7 @@ public class Database
      */
     public void parseData(String file)
     {
+        Scanner scanner = null;
         Exception exception = new Exception();
 
         try
@@ -100,7 +111,6 @@ public class Database
                     // Add the Handles to the HashTables
                     artistTable.insert(artistHandle);
                     songTable.insert(nameHandle);
-                    
 
                     // Add to the KVPairTrees
                     artistTree.insert(pairArtist);
@@ -116,9 +126,11 @@ public class Database
                     {
                         // print out duplicate info
                         System.out.println("|" + artist
-                            + "| duplicates a record already in the Artist database.");
+                            + "| duplicates a record "
+                            + "already in the Artist database.");
                         System.out.println("|" + name
-                            + "| duplicates a record already in the Song database.");
+                            + "| duplicates a record already in "
+                            + "the Song database.");
                         System.out.println("The KVPair (|" + artist + "|,|"
                             + name + "|),(" + artistTable.getEntry(artist)
                                 .getOffset() + "," + songTable.getEntry(name)
@@ -137,9 +149,11 @@ public class Database
                     {
                         // print out duplicate info
                         System.out.println("|" + artist
-                            + "| duplicates a record already in the Artist database.");
+                            + "| duplicates a record already in "
+                            + "the Artist database.");
                         System.out.println("|" + name
-                            + "| duplicates a record already in the Song database.");
+                            + "| duplicates a record already in "
+                            + "the Song database.");
 
                         // Create handles
                         Handle artistHandle = artistTable.getEntry(artist);
@@ -160,7 +174,8 @@ public class Database
                     {
                         // print out info
                         System.out.println("|" + artist
-                            + "| duplicates a record already in the Artist database.");
+                            + "| duplicates a record already "
+                            + "in the Artist database.");
 
                         // First, create the Handles and add to memManager
                         Handle artistHandle = artistTable.getEntry(artist);
@@ -203,7 +218,8 @@ public class Database
 
                         // print out duplicate info
                         System.out.println("|" + name
-                            + "| duplicates a record already in the Song database.");
+                            + "| duplicates a record already in "
+                            + "the Song database.");
 
                         // Add to the KVPairTrees
                         artistTree.insert(pairArtist);
@@ -407,7 +423,7 @@ public class Database
             }
 
             // print artist / song and print tree
-            else if (command.equals("print")) 
+            else if (command.equals("print"))
             {
 
                 String next = scanner.next();
@@ -427,7 +443,7 @@ public class Database
                 else if (next.equals("tree"))
                 {
                     System.out.println("Printing artist tree:");
-                    artistTree.dump(); 
+                    artistTree.dump();
 
                     System.out.println("Printing song tree:");
                     songTree.dump();
