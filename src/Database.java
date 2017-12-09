@@ -80,7 +80,7 @@ public class Database
                 String artist = song.split("<SEP>")[0];
                 String name = song.split("<SEP>")[1];
 
-                // Neither artist not name are there already
+                // Neither artist nor name are there already
                 if (!artistTable.containsElement(artist) && !songTable
                     .containsElement(name))
                 {
@@ -233,20 +233,30 @@ public class Database
                             artistTree.delete(artist, name);
                             songTree.delete(artist, name);
 
-                            // Delete from the memManager
-                            memManager.deleteItem(artistTable.getEntry(artist)
-                                .getOffset());
-                            memManager.deleteItem(songTable.getEntry(name)
-                                .getOffset());
+                            // Delete from the memManager if needed (not in tree
+                            // anymore)
+                            if (!artistTree.hasArtist(artist))
+                            {
+                                memManager.deleteItem(artistTable.getEntry(
+                                    artist).getOffset());
+                            }
 
-                            // Delete from the Hash Tables last
-                            if (artistTable.delete(artist) != -1)
+                            if (!songTree.hasSong(name))
+                            {
+                                memManager.deleteItem(songTable.getEntry(name)
+                                    .getOffset());
+                            }
+
+                            // Delete from the Hash Tables last if needed
+                            if (!artistTree.hasArtist(artist) && artistTable
+                                .delete(artist) != -1)
                             {
                                 System.out.println("|" + artist
                                     + "| is deleted from the artist database.");
                             }
 
-                            if (songTable.delete(name) != -1)
+                            if (!songTree.hasSong(name) && songTable.delete(
+                                name) != -1)
                             {
                                 System.out.println("|" + name
                                     + "| is deleted from the song database.");
@@ -303,8 +313,11 @@ public class Database
                             .getAllSongsFromArtist(artist);
 
                         // delete from trees
-                        artistTree.removeArtist(artist);
-                        songTree.removeArtist(artist);
+                        while (artistTree.hasArtist(artist))
+                        {
+                            artistTree.removeArtist(artist);
+                            songTree.removeArtist(artist);
+                        }
 
                         // delete artist from memManager and then artistTable
                         memManager.deleteItem(artistTable.getEntry(artist)
@@ -318,11 +331,16 @@ public class Database
                         // then songTable
                         for (String str : songsByArtist)
                         {
-                            memManager.deleteItem(songTable.getEntry(str)
-                                .getOffset());
-                            songTable.delete(str);
-                            System.out.println("|" + str
-                                + "| is deleted from the Song database.");
+                            // check if any other artist has a song of the names
+                            // of the ones that "artist" had
+                            if (!songTree.hasSong(str))
+                            {
+                                memManager.deleteItem(songTable.getEntry(str)
+                                    .getOffset());
+                                songTable.delete(str);
+                                System.out.println("|" + str
+                                    + "| is deleted from the Song database.");
+                            }
                         }
 
                     }
@@ -343,28 +361,45 @@ public class Database
                     // First check if it's there
                     if (songTable.containsElement(name))
                     {
-                        // delete name from memManager and then artistTable
-                        memManager.deleteItem(artistTable.getEntry(name)
-                            .getOffset());
-                        artistTable.delete(name);
 
-                        // delete all songs from that artist from memManager and
-                        // then songTable
-                        for (String str : artistTree.getAllArtistsFromSong(
-                            name))
-                        {
-                            memManager.deleteItem(songTable.getEntry(str)
-                                .getOffset());
-                            songTable.delete(str);
-                        }
+                        String[] artistsFromSong = songTree
+                            .getAllArtistsFromSong(name);
 
                         // delete from trees
-                        artistTree.removeName(name);
-                        songTree.removeName(name);
+                        while (songTree.hasSong(name))
+                        {
+                            songTree.removeName(name);
+                            artistTree.removeName(name);
+                        }
+
+                        // delete name from memManager and then songTable
+                        memManager.deleteItem(songTable.getEntry(name)
+                            .getOffset());
+                        songTable.delete(name);
+
+                        System.out.println("|" + name
+                            + "| is deleted from the Song database.");
+
+                        // delete all artists from that song from memManager and
+                        // then artistTable
+                        for (String str : artistsFromSong)
+                        {
+                            // check if any other songs have the same artist
+                            // as the artists you just deleted
+                            if (!artistTree.hasArtist(str))
+                            {
+                                memManager.deleteItem(artistTable.getEntry(str)
+                                    .getOffset());
+                                artistTable.delete(str);
+                                System.out.println("|" + str
+                                    + "| is deleted from the Artist database.");
+                            }
+                        }
+
                     }
                     else
                     {
-                        System.out.println("| " + name
+                        System.out.println("|" + name
                             + "| does not exist in the song database.");
                     }
                 }
@@ -426,6 +461,7 @@ public class Database
                 {
                     scanner.skip(" ");
                     String name = scanner.nextLine();
+
                     if (songTable.containsElement(name))
                     {
                         songTree.listSong(name);

@@ -52,15 +52,18 @@ public class HashTable
         return currentTableSize;
     }
 
+
     /**
-     * This method gets the number of occupied slots in the HashTable. 
-     * @return int Number of occupied slots. 
+     * This method gets the number of occupied slots in the HashTable.
+     * 
+     * @return int Number of occupied slots.
      */
     public int getSlotsOccupied()
     {
         return slotsOccupied;
     }
-    
+
+
     /**
      * This method gets the actual array table.
      * 
@@ -112,13 +115,13 @@ public class HashTable
         int homeSlot = hash(handleString, currentTableSize);
         int slotCount = homeSlot;
         int probeOffset = 1;
-  
+
         while (handlesArray[slotCount] != null) // TODO: Might have to ensure
-            // that we do not reach the end
-            // of the array.
+        // that we do not reach the end
+        // of the array.
         {
             if (memManager.getItemString(handlesArray[slotCount].getOffset())
-                    .equals(handleString))
+                .equals(handleString))
             {
                 strSlot = slotCount;
                 break;
@@ -126,7 +129,7 @@ public class HashTable
             else
             {
                 slotCount = (int)(homeSlot + Math.pow(probeOffset, 2))
-                        % this.currentTableSize;
+                    % this.currentTableSize;
                 probeOffset++;
             }
         }
@@ -155,15 +158,15 @@ public class HashTable
         if (find(handleString) == -1) // If doesn't already exist.
         {
             while (handlesArray[slotCount] != null && !isTombstone(
-                    handlesArray[slotCount]))
+                handlesArray[slotCount]))
             {
                 slotCount = (int)(homeSlot + Math.pow(probeOffset, 2))
-                        % this.currentTableSize;
+                    % this.currentTableSize;
                 probeOffset++;
             }
 
             handlesArray[slotCount] = handle;
-            slotsOccupied++;  
+            slotsOccupied++;
             occupiedIndecies.add(slotCount);
 
             // If the table is over 50% full, call resizeTable.
@@ -175,12 +178,12 @@ public class HashTable
             if (!isSongTable)
             {
                 System.out.println("|" + memManager.getItemString(handle
-                        .getOffset()) + "| is added to the Artist database.");
+                    .getOffset()) + "| is added to the Artist database.");
             }
             else
             {
                 System.out.println("|" + memManager.getItemString(handle
-                        .getOffset()) + "| is added to the Song database.");
+                    .getOffset()) + "| is added to the Song database.");
             }
             return slotCount;
         }
@@ -190,18 +193,19 @@ public class HashTable
             if (!isSongTable)
             {
                 System.out.println("|" + memManager.getItemString(handle
-                        .getOffset())
-                + "| duplicates a record already in the Artist database.");
+                    .getOffset())
+                    + "| duplicates a record already in the Artist database.");
             }
             else
             {
                 System.out.println("|" + memManager.getItemString(handle
-                        .getOffset())
-                + "| duplicates a record already in the Song database.");
+                    .getOffset())
+                    + "| duplicates a record already in the Song database.");
             }
             return -1;
         }
     }
+
 
     /**
      * This method "removes" a specified element from the hashtable by replacing
@@ -219,11 +223,11 @@ public class HashTable
         if (find(strToDelete) != -1)
         {
             // Probe until the correct string is found.
-            while (!memManager.getItemString(handlesArray[slotCount].getOffset())
-                    .equals(strToDelete))
+            while (!memManager.getItemString(handlesArray[slotCount]
+                .getOffset()).equals(strToDelete))
             {
                 slotCount = (int)(homeSlot + Math.pow(probeOffset, 2)
-                % this.currentTableSize);
+                    % this.currentTableSize);
                 probeOffset++;
             }
 
@@ -237,7 +241,7 @@ public class HashTable
                     occupiedIndecies.remove(i);
                 }
             }
-            
+
             return slotCount;
         }
         else
@@ -262,7 +266,7 @@ public class HashTable
         for (int i = 0; i < occupiedIndecies.size(); i++)
         {
             oldIndecies.add(occupiedIndecies.get(i));
-        }  
+        }
 
         occupiedIndecies.clear();
         // Get all occupied indecies and rehash them to the new table.
@@ -327,21 +331,21 @@ public class HashTable
                     System.out.print("|");
                     System.out.print(memManager.getItemString(h.getOffset()));
                     System.out.println("| " + this.find(memManager
-                            .getItemString(h.getOffset())));
+                        .getItemString(h.getOffset())));
                 }
-            }  
+            }
             System.out.println("total artists: " + slotsOccupied);
         }
         else
         {
             for (Handle h : handlesArray)
             {
-                if (h != null)
+                if (h != null && h.getOffset() != -1)
                 {
                     System.out.print("|");
                     System.out.print(memManager.getItemString(h.getOffset()));
                     System.out.println("| " + this.find(memManager
-                            .getItemString(h.getOffset())));
+                        .getItemString(h.getOffset())));
                 }
             }
 
