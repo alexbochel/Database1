@@ -100,6 +100,7 @@ public class Database
                     // Add the Handles to the HashTables
                     artistTable.insert(artistHandle);
                     songTable.insert(nameHandle);
+                    
 
                     // Add to the KVPairTrees
                     artistTree.insert(pairArtist);
