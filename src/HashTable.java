@@ -226,8 +226,8 @@ public class HashTable
             while (!memManager.getItemString(handlesArray[slotCount]
                 .getOffset()).equals(strToDelete))
             {
-                slotCount = (int)(homeSlot + Math.pow(probeOffset, 2)
-                    % this.currentTableSize);
+                slotCount = (int)(homeSlot + Math.pow(probeOffset, 2))
+                    % this.currentTableSize;
                 probeOffset++;
             }
 
@@ -274,7 +274,7 @@ public class HashTable
         {
             Handle toInsert = temp[oldIndecies.get(i)];
             slotsOccupied--;
-            insert(toInsert);
+            insertFromExpand(toInsert);
         }
     }
 
@@ -365,5 +365,55 @@ public class HashTable
     public boolean containsElement(String element)
     {
         return (this.find(element) != -1);
+    }
+
+
+    /**
+     * This method inserts a new handle in the hashtable specifically when
+     * called from the expandTable method. It does not output to the console
+     * because these songs are technically already in the database
+     * 
+     * @param string
+     *            Name of artist or song title.
+     * @param handle
+     *            Offset of element being inserted into the table.
+     * @return Index of element in table.
+     */
+    private int insertFromExpand(Handle handle)
+    {
+        // Handle string depends on type of table, song or artist.
+        String handleString = memManager.getItemString(handle.getOffset());
+
+        int homeSlot = hash(handleString, currentTableSize);
+        int slotCount = homeSlot;
+        int probeOffset = 1;
+
+        if (find(handleString) == -1) // If doesn't already exist.
+        {
+            while (handlesArray[slotCount] != null && !isTombstone(
+                handlesArray[slotCount]))
+            {
+                slotCount = (int)(homeSlot + Math.pow(probeOffset, 2))
+                    % this.currentTableSize;
+                probeOffset++;
+            }
+
+            handlesArray[slotCount] = handle;
+            slotsOccupied++;
+            occupiedIndecies.add(slotCount);
+
+            // If the table is over 50% full, call resizeTable.
+            if (slotsOccupied > (currentTableSize / 2))
+            {
+                expandTable();
+            }
+
+            return slotCount;
+        }
+        // duplicate
+        else
+        {
+            return -1;
+        }
     }
 }
