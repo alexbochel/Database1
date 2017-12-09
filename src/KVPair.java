@@ -15,8 +15,8 @@ public class KVPair implements Comparable<KVPair>
      * The constructor for the KVPair class. It will take in two handles to
      * store in the fields.
      * 
-     * @param newKey
-     * @param newValue
+     * @param newKey The key for the KVPair. 
+     * @param newValue The value for the KVPair. 
      */
     public KVPair(Handle newKey, Handle newValue)
     {
@@ -51,7 +51,7 @@ public class KVPair implements Comparable<KVPair>
      * Method to compare two KVPair objects. It will call the compareTo method
      * of the key Handles. If they are the same, then the method will compare
      * the value Handles
-     * 
+     * @param pair2 The KVPair being compared to. 
      * @return an int that will tell the BST which KVPair is "larger" than the
      *         other
      */

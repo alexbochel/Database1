@@ -21,7 +21,7 @@ public class MemoryManager
     /**
      * This constructor sets the initial size of the byte arrays.
      * 
-     * @param size
+     * @param cap
      *            Initial Size of the byte arrays.
      */
     public MemoryManager(int cap)
@@ -107,7 +107,7 @@ public class MemoryManager
         if (offset < 0)
         {
             return "";
-        }
+        }  
         
         byte[] dataByteLength = new byte[4];
         dataByteLength[0] = 0;
