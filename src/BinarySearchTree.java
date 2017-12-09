@@ -505,7 +505,12 @@ public class BinarySearchTree<T extends Comparable<? super T>>
         }
 
         // TODO Indenting and Info for the current note
-        for (int i = 0; i < treeRoot.getDepth() * 2; i++)
+        for (int i = 0; i < this.getHeight(treeRoot.getElement()) * 2; i++)
+        {
+            System.out.print(" ");
+        }
+
+        for (int i = 0; i < treeRoot.getDepth(); i++)
         {
             System.out.print(" ");
         }

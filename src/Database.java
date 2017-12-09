@@ -80,6 +80,7 @@ public class Database
                 String artist = song.split("<SEP>")[0];
                 String name = song.split("<SEP>")[1];
 
+                // Neither artist not name are there already
                 if (!artistTable.containsElement(artist) && !songTable
                     .containsElement(name))
                 {
@@ -104,22 +105,110 @@ public class Database
                     artistTree.insert(pairArtist);
                     songTree.insert(pairName);
                 }
-                // duplicate
+                // at least one is a duplicate
                 else
                 {
-                    // print out duplicate info
-                    System.out.println("|" + artist
-                        + "| duplicates a record already in the Artist database.");
-                    System.out.println("|" + name
-                        + "| duplicates a record already in the Song database.");
-                    System.out.println("The KVPair (|" + artist + "|,|" + name
-                        + "|),(" + artistTable.getEntry(artist).getOffset()
-                        + "," + songTable.getEntry(name).getOffset()
-                        + ") duplicates a record already in the tree.");
-                    System.out.println("The KVPair (|" + name + "|,|" + artist
-                        + "|),(" + songTable.getEntry(name).getOffset() + ","
-                        + artistTable.getEntry(artist).getOffset()
-                        + ") duplicates a record already in the tree.");
+                    // both are there and pair exists
+                    if (artistTable.containsElement(artist) && songTable
+                        .containsElement(name) && artistTree.doesPairExist(
+                            artist, name))
+                    {
+                        // print out duplicate info
+                        System.out.println("|" + artist
+                            + "| duplicates a record already in the Artist database.");
+                        System.out.println("|" + name
+                            + "| duplicates a record already in the Song database.");
+                        System.out.println("The KVPair (|" + artist + "|,|"
+                            + name + "|),(" + artistTable.getEntry(artist)
+                                .getOffset() + "," + songTable.getEntry(name)
+                                    .getOffset()
+                            + ") duplicates a record already in the tree.");
+                        System.out.println("The KVPair (|" + name + "|,|"
+                            + artist + "|),(" + songTable.getEntry(name)
+                                .getOffset() + "," + artistTable.getEntry(
+                                    artist).getOffset()
+                            + ") duplicates a record already in the tree.");
+                    }
+                    // both are there but the pair does not exist
+                    else if (artistTable.containsElement(artist) && songTable
+                        .containsElement(name) && !artistTree.doesPairExist(
+                            artist, name))
+                    {
+                        // print out duplicate info
+                        System.out.println("|" + artist
+                            + "| duplicates a record already in the Artist database.");
+                        System.out.println("|" + name
+                            + "| duplicates a record already in the Song database.");
+
+                        // Create handles
+                        Handle artistHandle = artistTable.getEntry(artist);
+                        Handle nameHandle = songTable.getEntry(name);
+
+                        // Then create the KVPairs
+                        KVPair pairArtist = new KVPair(artistHandle,
+                            nameHandle);
+                        KVPair pairName = new KVPair(nameHandle, artistHandle);
+
+                        // Add to the KVPairTrees
+                        artistTree.insert(pairArtist);
+                        songTree.insert(pairName);
+                    }
+                    // artist exists but song does not
+                    else if (artistTable.containsElement(artist) && !songTable
+                        .containsElement(name))
+                    {
+                        // print out info
+                        System.out.println("|" + artist
+                            + "| duplicates a record already in the Artist database.");
+
+                        // First, create the Handles and add to memManager
+                        Handle artistHandle = artistTable.getEntry(artist);
+
+                        Handle nameHandle = new Handle(memManager
+                            .getDatabaseSize());
+                        memManager.insertItem(name);
+
+                        // Then create the KVPairs
+                        KVPair pairArtist = new KVPair(artistHandle,
+                            nameHandle);
+                        KVPair pairName = new KVPair(nameHandle, artistHandle);
+
+                        // Add the Handles to the HashTables
+                        songTable.insert(nameHandle);
+
+                        // Add to the KVPairTrees
+                        artistTree.insert(pairArtist);
+                        songTree.insert(pairName);
+
+                    }
+                    // song exists but artist does not
+                    else if (!artistTable.containsElement(artist) && songTable
+                        .containsElement(name))
+                    {
+                        // First, create the Handles and add to memManager
+                        Handle artistHandle = new Handle(memManager
+                            .getDatabaseSize());
+                        memManager.insertItem(artist);
+
+                        Handle nameHandle = songTable.getEntry(name);
+
+                        // Then create the KVPairs
+                        KVPair pairArtist = new KVPair(artistHandle,
+                            nameHandle);
+                        KVPair pairName = new KVPair(nameHandle, artistHandle);
+
+                        // Add the Handles to the HashTables
+                        artistTable.insert(artistHandle);
+
+                        // print out duplicate info
+                        System.out.println("|" + name
+                            + "| duplicates a record already in the Song database.");
+
+                        // Add to the KVPairTrees
+                        artistTree.insert(pairArtist);
+                        songTree.insert(pairName);
+
+                    }
                 }
             }
 
@@ -184,6 +273,13 @@ public class Database
                 {
                     System.out.println("|" + artist
                         + "| does not exist in the artist database.");
+
+                    // ALSO does not contain name
+                    if (!songTable.containsElement(name))
+                    {
+                        System.out.println("|" + name
+                            + "| does not exist in the song database.");
+                    }
                 }
             }
 
@@ -203,24 +299,32 @@ public class Database
                     if (artistTable.containsElement(artist))
                     {
 
+                        String[] songsByArtist = artistTree
+                            .getAllSongsFromArtist(artist);
+
+                        // delete from trees
+                        artistTree.removeArtist(artist);
+                        songTree.removeArtist(artist);
+
                         // delete artist from memManager and then artistTable
                         memManager.deleteItem(artistTable.getEntry(artist)
                             .getOffset());
                         artistTable.delete(artist);
 
+                        System.out.println("|" + artist
+                            + "| is deleted from the Artist database.");
+
                         // delete all songs from that artist from memManager and
                         // then songTable
-                        for (String str : artistTree.getAllSongsFromArtist(
-                            artist))
+                        for (String str : songsByArtist)
                         {
                             memManager.deleteItem(songTable.getEntry(str)
                                 .getOffset());
                             songTable.delete(str);
+                            System.out.println("|" + str
+                                + "| is deleted from the Song database.");
                         }
 
-                        // delete from trees
-                        artistTree.removeArtist(artist);
-                        songTree.removeArtist(artist);
                     }
                     else
                     {
@@ -288,7 +392,7 @@ public class Database
                 {
                     System.out.println("Printing artist tree:");
                     artistTree.dump(); // TODO fix this
-                    
+
                     System.out.println("Printing song tree:");
                     songTree.dump();
                 }

@@ -132,10 +132,7 @@ public class KVPairTree extends BinarySearchTree<KVPair>
                     System.out.print("|,|");
                     System.out.print(memManager.getItemString(pair.getValue()
                         .getOffset()));
-                    System.out.print("|),");
-
-                    System.out.print(pair.getKey().getOffset() + "," + pair
-                        .getValue().getOffset());
+                    System.out.print("|)");
 
                     System.out.println(" is deleted from the tree.");
 
@@ -164,10 +161,7 @@ public class KVPairTree extends BinarySearchTree<KVPair>
                     System.out.print("|,|");
                     System.out.print(memManager.getItemString(pair.getValue()
                         .getOffset()));
-                    System.out.print("|),");
-
-                    System.out.print(pair.getKey().getOffset() + "," + pair
-                        .getValue().getOffset());
+                    System.out.print("|)");
 
                     System.out.println(" is deleted from the tree.");
 
@@ -215,10 +209,7 @@ public class KVPairTree extends BinarySearchTree<KVPair>
                     System.out.print("|,|");
                     System.out.print(memManager.getItemString(pair.getValue()
                         .getOffset()));
-                    System.out.print("|),");
-
-                    System.out.print(pair.getKey().getOffset() + "," + pair
-                        .getValue().getOffset());
+                    System.out.print("|)");
 
                     System.out.println(" is deleted from the tree.");
 
@@ -245,10 +236,7 @@ public class KVPairTree extends BinarySearchTree<KVPair>
                     System.out.print("|,|");
                     System.out.print(memManager.getItemString(pair.getValue()
                         .getOffset()));
-                    System.out.print("|),");
-
-                    System.out.print(pair.getKey().getOffset() + "," + pair
-                        .getValue().getOffset());
+                    System.out.print("|)");
 
                     System.out.println(" is deleted from the tree.");
 

@@ -180,7 +180,7 @@ public class HashTable
             else
             {
                 System.out.println("|" + memManager.getItemString(handle
-                        .getOffset()) + "| is added to the  Song database.");
+                        .getOffset()) + "| is added to the Song database.");
             }
             return slotCount;
         }
